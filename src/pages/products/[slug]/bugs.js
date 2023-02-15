@@ -1,0 +1,91 @@
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import Link from "next/link";
+import {
+  query,
+  where,
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+import { db } from "@/firebase/config";
+
+import styles from "@/styles/Bugs.module.css";
+
+import ProductNav from "@/pages/Components/ProductNav/ProductNav";
+import BugCard from "@/pages/Components/BugCard/BugCard";
+
+export default function product({ product, bugs }) {
+  return (
+    <>
+      <Head>
+        <title>
+          {product.name ? product.name : "Product not found"} - Publicly
+        </title>
+        <meta name="description" content="The user feedback management tool" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <div className="container-dark">
+        <ProductNav product={product} />
+        <div className="container">
+          <h1>Bugs</h1>
+          <div className={styles.bugsList}>
+            {bugs.length > 0 ? (
+              bugs.map((bug) => (
+                <Link href={`/bugs/${bug.id}`}>
+                  <BugCard key={bug.id} bug={bug} />
+                </Link>
+              ))
+            ) : (
+              <p className={styles.noBugs}>No bugs yet.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export async function getServerSideProps(context) {
+  const slug = context.params.slug;
+
+  const productsInstance = collection(db, "products");
+  const bugsInstance = collection(db, "bugs");
+
+  let product;
+
+  const productRef = query(productsInstance, where("slug", "==", slug));
+  const docSnap = await getDocs(productRef);
+  docSnap.forEach((snap) => {
+    if (snap.exists()) {
+      const data = snap.data();
+      product = data;
+    } else {
+      console.log("no data");
+    }
+  });
+
+  const bugsId = product.bugs;
+  let bugsList = [];
+
+  await Promise.all(
+    bugsId.map(async (bugId) => {
+      const bugRef = doc(db, "bugs", bugId);
+      const bugSnap = await getDoc(bugRef);
+      const newBug = bugSnap.data();
+      if (newBug.active) {
+        newBug.id = bugId;
+        bugsList.push(newBug);
+      }
+    })
+  );
+
+  return {
+    props: {
+      product: JSON.parse(JSON.stringify(product)),
+      bugs: JSON.parse(JSON.stringify(bugsList)),
+    },
+  };
+}

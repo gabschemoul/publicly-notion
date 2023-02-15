@@ -1,0 +1,9 @@
+.bugsList {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.noBugs {
+  color: rgba(255, 255, 255, 0.6);
+}

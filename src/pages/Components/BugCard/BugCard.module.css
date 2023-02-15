@@ -1,0 +1,54 @@
+.card {
+  width: 100%;
+  height: 60px;
+  background-color: #343841;
+  border-radius: 10px;
+  border: 1px solid #4e535e;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.title {
+  font-weight: 700;
+  color: white;
+  font-size: 17px;
+}
+
+.cardRight {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  column-gap: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 100%;
+}
+
+.statusWrapper {
+  margin-right: 10px;
+}
+
+.statusButton {
+  color: white;
+  background-color: #fd4298;
+  padding: 4px 8px;
+  font-size: 13px;
+  border-radius: 3px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.reported {
+  background-color: #6e4651;
+}
+.inProgress {
+  background-color: #fd4298;
+}
+.resolved {
+  background-color: #42fd5e;
+}
+.default {
+  background-color: black;
+}

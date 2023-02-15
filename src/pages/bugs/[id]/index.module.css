@@ -1,0 +1,173 @@
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.statusMenuWrapper {
+  position: relative;
+}
+
+.statusWrapper {
+  margin-right: 10px;
+  position: relative;
+}
+
+.statusButton {
+  color: white;
+  padding: 4px 8px;
+  font-size: 13px;
+  border-radius: 3px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  display: inline-block;
+  display: flex;
+  align-items: center;
+  column-gap: 7px;
+  cursor: pointer;
+}
+
+.reported {
+  background-color: #6e4651;
+}
+.inProgress {
+  background-color: #fd4298;
+}
+.resolved {
+  background-color: #42fd5e;
+}
+.default {
+  background-color: black;
+}
+
+.menu {
+  display: none;
+  flex-direction: column;
+  row-gap: 10px;
+  align-items: flex-end;
+  padding: 20px;
+  background-color: #1c212b;
+  border: 1px solid #2d333f;
+  border-radius: 10px;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 146px;
+}
+
+.bugMenu {
+  position: relative;
+}
+
+.dotsMenuWrapper {
+  cursor: pointer;
+  padding: 0 4px;
+  height: 14px;
+}
+
+.bugMenuWrapper {
+  padding: 20px;
+  background-color: #1c212b;
+  border: 1px solid #2d333f;
+  position: absolute;
+  top: 30px;
+  right: 0px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  min-width: 150px;
+}
+
+.bugMenuItem {
+  color: white;
+  cursor: pointer;
+}
+
+.deletePopup {
+  position: fixed;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.deletePopupCard {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  color: black;
+  border-radius: 20px;
+  row-gap: 20px;
+}
+
+.choices {
+  display: flex;
+  column-gap: 20px;
+}
+
+.topRight {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 20px;
+}
+
+.attachmentsSection {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.attachmentsWrapper {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  row-gap: 10px;
+}
+
+.attachmentWrapper {
+  background-size: cover;
+  background-position: 50%;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.attachmentOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  flex-direction: column;
+  row-gap: 20px;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+}
+
+.attachmentOverlay a {
+  color: white !important;
+}
+
+.attachmentImage {
+  width: 80vw;
+  height: auto;
+}
+
+.closeButton {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
+}

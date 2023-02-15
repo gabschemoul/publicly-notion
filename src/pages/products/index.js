@@ -1,0 +1,76 @@
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+
+import ProductCard from "../Components/ProductCard/ProductCard";
+import { db } from "@/firebase/config";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+
+import styles from "./index.module.css";
+import product from "./[slug]";
+import plusIcon from "../../../public/assets/icons/plus-icon.svg";
+
+import { useSession, getSession } from "next-auth/react";
+
+export default function index({ products }) {
+  return (
+    <>
+      <Head>
+        <title>My products - Publicly</title>
+        <meta name="description" content="The user feedback management tool" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <div className="container">
+        <h1>My products</h1>
+        <div className={styles.list}>
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              slug={product.slug}
+              name={product.name}
+              tagline={product.tagline}
+              icon={product.icon}
+            />
+          ))}
+          <Link href="/products/new" className={styles.newProductCard}>
+            <Image src={plusIcon} width={20} height={20} />
+            <p>New product</p>
+          </Link>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  const userInstance = doc(db, "users", session.user.id);
+  const userSnap = await getDoc(userInstance);
+  const productsId = userSnap.data().productsId;
+
+  let products = [];
+
+  await Promise.all(
+    productsId.map(async (productId) => {
+      const productRef = doc(db, "products", productId);
+      const productSnap = await getDoc(productRef);
+      const newProduct = productSnap.data();
+      if (newProduct.active) {
+        newProduct.id = productId;
+        products.push(newProduct);
+      }
+    })
+  );
+
+  const docs = JSON.parse(JSON.stringify(products));
+
+  return {
+    props: {
+      products: docs,
+    },
+  };
+}

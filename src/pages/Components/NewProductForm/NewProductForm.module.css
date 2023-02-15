@@ -1,0 +1,54 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.form input {
+  height: 50px;
+  border-radius: 10px;
+  padding-left: 30px;
+  font-size: 16px;
+  background-color: #212327;
+  border: 2px solid #fd429900;
+  border-radius: 50px;
+  color: white;
+  font-weight: 600;
+}
+
+.form input:focus {
+  border: 2px solid #fd4298;
+}
+
+.form input:focus-visible {
+  outline: none;
+}
+
+.form input::placeholder {
+  font-weight: 500;
+}
+
+.form button {
+  height: 50px;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 700;
+  background-color: #fd4298;
+  border: none;
+  color: white;
+  border-radius: 50px;
+}
+
+.iconUpload {
+  min-width: 100px;
+  height: 100px;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #212327;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+  border-radius: 10px;
+}
