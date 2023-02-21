@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Link from "next/link";
+import { getSession } from "next-auth/react";
+
 import {
   query,
   where,
   collection,
   getDocs,
   doc,
-  getDoc,
   setDoc,
-  deleteDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import {
@@ -135,7 +134,6 @@ export default function settings({ product }) {
             setNewProduct((prev) => {
               return { ...prev, icon: downloadURL };
             });
-            //console.log("File available at", downloadURL);
           });
         }
       );
@@ -200,10 +198,10 @@ export default function settings({ product }) {
         <meta name="description" content="The user feedback management tool" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div className="container-dark">
+      <div className={styles.productSubContainer}>
         <ProductNav product={product} />
-        <div className="container">
-          <h1>Settings</h1>
+        <div className={styles.container}>
+          <h1 className={styles.subTitle}>Settings</h1>
           <div className={styles.settingsList}>
             <form action="" onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.settingsLine}>
@@ -312,6 +310,17 @@ export default function settings({ product }) {
 }
 
 export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
+  }
+
   const slug = context.params.slug;
 
   const productsInstance = collection(db, "products");

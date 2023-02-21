@@ -1,8 +1,6 @@
 .container {
   width: 100%;
   height: 100%;
-  background-color: #0f1218;
-  border-radius: 40px;
   padding: 50px 60px;
   display: flex;
   flex-direction: column;
@@ -30,11 +28,16 @@
   justify-content: center;
   /*height: 100%;*/
   width: 30%;
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: #0f0f0f;
   padding: 30px;
   border-radius: 20px;
   color: white;
   font-size: 20px;
   min-height: 200px;
   margin-bottom: 2%;
+  transition: all 100ms ease-in-out;
+}
+
+.newProductCard:hover {
+  background-color: #171717;
 }

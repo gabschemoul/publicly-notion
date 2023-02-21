@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
+import { getSession } from "next-auth/react";
 import {
   query,
   where,
@@ -27,10 +26,10 @@ export default function product({ product, bugs }) {
         <meta name="description" content="The user feedback management tool" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div className="container-dark">
+      <div className={styles.productSubContainer}>
         <ProductNav product={product} />
-        <div className="container">
-          <h1>Bugs</h1>
+        <div className={styles.container}>
+          <h1 className={styles.subTitle}>Bugs</h1>
           <div className={styles.bugsList}>
             {bugs.length > 0 ? (
               bugs.map((bug) => (
@@ -49,10 +48,20 @@ export default function product({ product, bugs }) {
 }
 
 export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
+  }
+
   const slug = context.params.slug;
 
   const productsInstance = collection(db, "products");
-  const bugsInstance = collection(db, "bugs");
 
   let product;
 

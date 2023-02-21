@@ -1,3 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 25px;
+  padding-top: 20px;
+  flex-grow: 1;
+  padding-left: 20px;
+}
+
+.productSubContainer {
+  display: flex;
+  column-gap: 20px;
+  align-items: flex-start;
+}
+
+.subTitle {
+  margin-bottom: 0;
+}
+
 .top {
   display: flex;
   justify-content: space-between;
@@ -11,8 +30,37 @@
 .statusWrapper {
   margin-right: 10px;
   position: relative;
+  white-space: nowrap;
 }
 
+.statusMenuWrapper .statusWrapper {
+  margin-right: 0;
+}
+
+.statusButton {
+  color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 7px 10px;
+  border-radius: 5px;
+  letter-spacing: 0.2px;
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 100ms ease-in-out;
+}
+
+.statusButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.statusDot {
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: 50%;
+}
+/*
 .statusButton {
   color: white;
   padding: 4px 8px;
@@ -26,33 +74,40 @@
   column-gap: 7px;
   cursor: pointer;
 }
-
+*/
 .reported {
-  background-color: #6e4651;
+  background-color: rgb(231, 51, 48);
+  box-shadow: 0px 0px 8px 4px rgba(231, 51, 48, 0.16);
 }
 .inProgress {
-  background-color: #fd4298;
+  background-color: rgb(255, 179, 0);
+  box-shadow: 0px 0px 8px 4px rgba(255, 179, 0, 0.16);
 }
 .resolved {
   background-color: #42fd5e;
+  box-shadow: 0px 0px 8px 4px rgba(66, 253, 94, 0.16);
 }
 .default {
-  background-color: black;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 8px 4px rgba(255, 255, 255, 0.16);
 }
 
 .menu {
   display: none;
   flex-direction: column;
   row-gap: 10px;
-  align-items: flex-end;
+  align-items: flex-start;
   padding: 20px;
-  background-color: #1c212b;
-  border: 1px solid #2d333f;
+  /*background-color: #1c212b;*/
+  background-color: #0f0f0f;
+  /*border: 1px solid #2d333f;*/
+  border: 1px solid rgba(108, 108, 108, 0.3);
   border-radius: 10px;
   position: absolute;
   top: 40px;
   right: 0;
-  width: 146px;
+  width: 175px;
+  z-index: 1000;
 }
 
 .bugMenu {
@@ -77,11 +132,17 @@
   flex-direction: column;
   row-gap: 15px;
   min-width: 150px;
+  z-index: 1000;
 }
 
 .bugMenuItem {
   color: white;
   cursor: pointer;
+}
+
+.description {
+  line-height: 1.6em;
+  opacity: 80%;
 }
 
 .deletePopup {

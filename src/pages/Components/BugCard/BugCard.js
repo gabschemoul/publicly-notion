@@ -8,23 +8,28 @@ export default function BugCard(props) {
     month: "short" /*
     hour: "2-digit",
     minute: "2-digit",*/,
-  }).format(props.creationDate);
+  }).format(
+    new Date(
+      props.bug.creationDate.seconds * 1000 +
+        props.bug.creationDate.nanoseconds / 1000000
+    )
+  );
 
   const bug = props.bug;
 
   const statusColor = (status) => {
     switch (status) {
       case "Reported":
-        return styles.statusButton + " " + styles.reported;
+        return styles.statusDot + " " + styles.reported;
         break;
       case "In progress":
-        return styles.statusButton + " " + styles.inProgress;
+        return styles.statusDot + " " + styles.inProgress;
         break;
       case "Resolved":
-        return styles.statusButton + " " + styles.resolved;
+        return styles.statusDot + " " + styles.resolved;
         break;
       default:
-        return styles.statusButton + " " + styles.resolved;
+        return styles.statusDot + " " + styles.resolved;
     }
   };
 
@@ -35,7 +40,8 @@ export default function BugCard(props) {
       </div>
       <div className={styles.cardRight}>
         <div className={styles.statusWrapper}>
-          <div className={statusColor(bug.status)}>
+          <div className={styles.statusButton}>
+            <div className={statusColor(bug.status)}></div>
             <p>{bug.status}</p>
           </div>
         </div>

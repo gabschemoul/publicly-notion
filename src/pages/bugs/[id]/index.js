@@ -2,17 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
-import {
-  doc,
-  getDoc,
-  setDoc,
-  onSnapshot,
-  query,
-  where,
-  collection,
-  getDocs,
-} from "firebase/firestore";
+import { getSession } from "next-auth/react";
+
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
 import ProductNav from "@/pages/Components/ProductNav/ProductNav";
@@ -55,16 +47,16 @@ export default function index({ bug, product, bugId, productId }) {
   const statusColor = (status) => {
     switch (status) {
       case "Reported":
-        return styles.statusButton + " " + styles.reported;
+        return styles.statusDot + " " + styles.reported;
         break;
       case "In progress":
-        return styles.statusButton + " " + styles.inProgress;
+        return styles.statusDot + " " + styles.inProgress;
         break;
       case "Resolved":
-        return styles.statusButton + " " + styles.resolved;
+        return styles.statusDot + " " + styles.resolved;
         break;
       default:
-        return styles.statusButton + " " + styles.resolved;
+        return styles.statusDot + " " + styles.resolved;
     }
   };
 
@@ -155,47 +147,61 @@ export default function index({ bug, product, bugId, productId }) {
   return (
     <>
       <Head>
-        <title>{bug.id ? bug.id : "Bug not found"} - Publicly</title>
+        <title>
+          {product.name ? product.name : "Product not found"} - Publicly
+        </title>
         <meta name="description" content="The user feedback management tool" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div className="container-dark">
+      <div className={styles.productSubContainer}>
         <ProductNav product={product} />
-        <div className="container">
+        <div class={styles.container}>
           <div className={styles.top}>
-            <h1>{bug.title}</h1>
+            <h1 class={styles.subTitle}>{bug.title}</h1>
             <div className={styles.topRight}>
               <div className={styles.statusMenuWrapper}>
-                <div className={styles.statusWrapper}></div>
-                <div
-                  className={statusColor(bug.status)}
-                  onClick={() => toggleMenu()}
-                  ref={statusWrapperRef}
-                >
-                  <p ref={statusNameRef}>{bug.status}</p>
-                  <Image src={arrowDown} alt="" width={8} />
+                <div className={styles.statusWrapper}>
+                  <div
+                    className={styles.statusButton}
+                    onClick={() => toggleMenu()}
+                  >
+                    <div
+                      ref={statusWrapperRef}
+                      className={statusColor(bug.status)}
+                    ></div>
+                    <p ref={statusNameRef}>{bug.status}</p>
+                    <Image src={arrowDown} alt="" width={8} />
+                  </div>
                 </div>
+
                 <div className={styles.menu} ref={menuRef}>
                   <div
-                    className={styles.statusButton + " " + styles.reported}
+                    className={styles.statusButton}
                     onClick={() => statusToReported()}
                   >
+                    <div
+                      className={styles.statusDot + " " + styles.reported}
+                    ></div>
                     <p>Reported</p>
-                    <Image src={arrowDown} alt="" width={8} />
                   </div>
                   <div
-                    className={styles.statusButton + " " + styles.inProgress}
+                    className={styles.statusButton}
                     onClick={() => statusToInProgress()}
                   >
+                    <div
+                      className={styles.statusDot + " " + styles.inProgress}
+                    ></div>
                     <p>In progress</p>
-                    <Image src={arrowDown} alt="" width={8} />
                   </div>
+
                   <div
-                    className={styles.statusButton + " " + styles.resolved}
+                    className={styles.statusButton}
                     onClick={() => statusToResolved()}
                   >
+                    <div
+                      className={styles.statusDot + " " + styles.resolved}
+                    ></div>
                     <p>Resolved</p>
-                    <Image src={arrowDown} alt="" width={8} />
                   </div>
                 </div>
               </div>
@@ -226,7 +232,7 @@ export default function index({ bug, product, bugId, productId }) {
               </div>
             </div>
           </div>
-          <p>{bug.description}</p>
+          <p className={styles.description}>{bug.description}</p>
           <div className={styles.attachmentsSection}>
             <h2>Attachments</h2>
             <div className={styles.attachmentsWrapper}>
@@ -288,6 +294,17 @@ export default function index({ bug, product, bugId, productId }) {
 }
 
 export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
+  }
+
   const docRef = doc(db, "bugs", context.params.id);
   const docSnap = await getDoc(docRef);
   const bug = docSnap.data();
@@ -295,13 +312,7 @@ export async function getServerSideProps(context) {
   const docRef2 = doc(db, "products", bug.productId);
   const docSnap2 = await getDoc(docRef2);
   const product = docSnap2.data();
-  /*
-  await new Promise(async () => {
-    const docRef2 = doc(db, "products", bug.productId);
-    const docSnap2 = await getDoc(docRef2);
-    const product = docSnap2.data();
-  });
-*/
+
   return {
     props: {
       bug: JSON.parse(JSON.stringify(bug)),

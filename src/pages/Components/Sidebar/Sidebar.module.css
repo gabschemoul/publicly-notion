@@ -1,15 +1,17 @@
 .sidenav {
-  width: 300px;
+  width: 72px;
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
+  background-color: #0f0f0f;
+  border-right: 1px solid rgba(108, 108, 108, 0.3);
+  padding: 20px 0;
 }
 
 .container {
   width: 100%;
   height: 100%;
-  padding: 30px;
 }
 
 .wrapper {
@@ -18,13 +20,15 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .top {
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   row-gap: 60px;
 }
 
@@ -32,7 +36,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   row-gap: 10px;
 }
 
@@ -41,27 +45,30 @@
   font-weight: 900;
 }
 
+.productIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+}
+
 .mainMenuLink {
   display: flex;
   align-items: center;
-  column-gap: 18px;
+  justify-content: center;
   color: white;
-  font-weight: 700;
-  font-size: 17px;
-  padding: 13px 20px;
-  border-radius: 10px;
+  border-radius: 6px;
+  width: 56px;
+  height: 56px;
 }
 
 .mainMenuLinkActive {
   display: flex;
   align-items: center;
-  column-gap: 18px;
-  color: black;
-  font-weight: 700;
-  font-size: 17px;
-  background-color: #fd4298;
-  padding: 13px 20px;
-  border-radius: 10px;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  width: 56px;
+  height: 56px;
 }
 
 .mainMenuLink:hover {
@@ -74,10 +81,19 @@
 .bottom {
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column-reverse;
   row-gap: 20px;
   align-items: center;
   justify-content: space-between;
+}
+
+.sidenavMenuIcon {
+  opacity: 50%;
+  transition: all 100ms ease-in-out;
+}
+
+.sidenavMenuIcon:hover {
+  opacity: 70%;
 }
 
 .user {
@@ -122,11 +138,11 @@
 
 .menuWrapper {
   padding: 20px;
-  background-color: #1c212b;
-  border: 1px solid #2d333f;
+  background-color: #0f0f0f;
+  border: 1px solid rgba(108, 108, 108, 0.3);
   position: absolute;
   bottom: 0;
-  left: 20px;
+  left: 30px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;

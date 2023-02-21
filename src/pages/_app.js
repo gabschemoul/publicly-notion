@@ -9,7 +9,6 @@ function Loading() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log("Use effect");
     const handleStart = (url) => {
       console.log("Handle Start");
       url !== router.asPath && setLoading(true);

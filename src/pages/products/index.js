@@ -2,17 +2,15 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
 
 import ProductCard from "../Components/ProductCard/ProductCard";
 import { db } from "@/firebase/config";
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 import styles from "./index.module.css";
-import product from "./[slug]";
 import plusIcon from "../../../public/assets/icons/plus-icon.svg";
 
-import { useSession, getSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 
 export default function index({ products }) {
   return (
@@ -22,19 +20,21 @@ export default function index({ products }) {
         <meta name="description" content="The user feedback management tool" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div className="container">
+
+      <div className={styles.container}>
         <h1>My products</h1>
         <div className={styles.list}>
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              id={product.id}
-              slug={product.slug}
-              name={product.name}
-              tagline={product.tagline}
-              icon={product.icon}
-            />
-          ))}
+          {products &&
+            products.map((product) => (
+              <ProductCard
+                key={product.id}
+                id={product.id}
+                slug={product.slug}
+                name={product.name}
+                tagline={product.tagline}
+                icon={product.icon}
+              />
+            ))}
           <Link href="/products/new" className={styles.newProductCard}>
             <Image src={plusIcon} width={20} height={20} />
             <p>New product</p>
@@ -48,6 +48,14 @@ export default function index({ products }) {
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
+  }
   const userInstance = doc(db, "users", session.user.id);
   const userSnap = await getDoc(userInstance);
   const productsId = userSnap.data().productsId;
@@ -71,6 +79,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       products: docs,
+      session,
     },
   };
 }

@@ -1,6 +1,15 @@
 .main {
-  padding: 30px;
-  padding-left: 300px;
+  padding: 20px;
+  padding-left: 92px;
   min-height: 100vh;
   height: 100%;
+}
+
+.mainSignin {
+  padding: 20px;
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -1,7 +1,6 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { initializeApp, getApp, getApps } from "firebase/app";
+import { getSession, useSession } from "next-auth/react";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -19,4 +18,24 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    redirect: {
+      destination: "/products",
+      permanent: false,
+    },
+  };
 }

@@ -1,8 +1,13 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 import styles from "./ProductNav.module.css";
+
+import bugIcon from "../../../../public/assets/icons/bugIcon.svg";
+import settingsIcon from "../../../../public/assets/icons/settingsIcon.svg";
+import newTabIcon from "../../../../public/assets/icons/newTabIcon.svg";
 
 export default function ProductNav(props) {
   const router = useRouter();
@@ -15,8 +20,9 @@ export default function ProductNav(props) {
             className={styles.icon}
             style={{ backgroundImage: "url(" + props.product.icon + ")" }}
           ></div>
-          <div className={styles.name}>
-            <p>{props.product.name}</p>
+          <div className={styles.infos}>
+            <p className={styles.name}>{props.product.name}</p>
+            <p className={styles.tagline}>{props.product.tagline}</p>
           </div>
         </div>
         <div className={styles.menuWrapper}>
@@ -29,7 +35,8 @@ export default function ProductNav(props) {
                 : styles.menuLink
             }
           >
-            Bugs
+            <Image src={bugIcon} className={styles.menuIcon} width={16} />
+            <p className={styles.menuLinkText}>Bugs</p>
           </Link>
           <Link
             href={`/products/${props.product.slug}/settings`}
@@ -39,13 +46,15 @@ export default function ProductNav(props) {
                 : styles.menuLink
             }
           >
-            Settings
+            <Image src={settingsIcon} className={styles.menuIcon} width={16} />
+            <p className={styles.menuLinkText}>Settings</p>
           </Link>
           <Link
             href={`https://publicly.so/products/${props.product.slug}`}
-            className={styles.cta}
+            className={styles.menuLink}
           >
-            Go To Public Page
+            <Image src={newTabIcon} className={styles.menuIcon} width={16} />
+            <p className={styles.menuLinkText}>View Public Page</p>
           </Link>
         </div>
       </div>

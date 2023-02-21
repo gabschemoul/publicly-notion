@@ -76,5 +76,6 @@ export default NextAuth({
   },
   pages: {
     // new user
+    signIn: "/signin",
   },
 });
