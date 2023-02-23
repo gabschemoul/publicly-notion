@@ -15,11 +15,13 @@ import dotsMenuVertical from "../../../../public/assets/icons/3-dots-menu-icon.s
 import settingsIcon from "../../../../public/assets/icons/settingsIconV2.svg";
 import myProductsIcon from "../../../../public/assets/icons/my-products-icon.svg";
 import helpCenterIcon from "../../../../public/assets/icons/help-center-icon.svg";
+import plusIcon from "../../../../public/assets/icons/plusIcon.svg";
 import settings from "@/pages/products/[slug]/settings";
 
 export default function Sidebar(props) {
   const [menuOpened, setMenuOpened] = useState(false);
   const [products, setProducts] = useState([]);
+  const [bugs, setBugs] = useState([]);
 
   const openMenu = () => {
     setMenuOpened(!menuOpened);
@@ -27,21 +29,38 @@ export default function Sidebar(props) {
 
   const router = useRouter();
   const currentRoute = router.pathname;
+  const urlPath = router.asPath;
   const { data: session, status } = useSession();
 
-  //let products = [];
-
   useEffect(() => {
-    if (session) {
-      setProducts(getProducts(session));
-      console.log("OK");
-      console.log(products);
-    }
+    (async () => {
+      const userInstance = doc(db, "users", session.user.id);
+      const userSnap = await getDoc(userInstance);
+      const productsId = userSnap.data().productsId;
+
+      let allProducts = [];
+      let allBugs = [];
+
+      const promiseee = await Promise.all(
+        productsId.map(async (productId) => {
+          const productRef = doc(db, "products", productId);
+          const productSnap = await getDoc(productRef);
+          const newProduct = productSnap.data();
+          if (newProduct.active) {
+            newProduct.id = productId;
+            allProducts.push(newProduct);
+
+            newProduct.bugs.map((bug) => {
+              allBugs.push(bug);
+            });
+          }
+        })
+      ).then(() => {
+        setProducts(allProducts);
+        setBugs(allBugs);
+      });
+    })();
   }, [session]);
-
-  //console.log(products.length);
-
-  //const userInstance = doc(db, "users", userId);
 
   return (
     <nav className={styles.sidenav}>
@@ -58,28 +77,34 @@ export default function Sidebar(props) {
             </div>
           </div>
           <div className={styles.mainMenuWrapper}>
-            <Link
-              href="/products"
-              className={
-                //currentRoute === "/products"
-                currentRoute.includes("/products") ||
-                currentRoute.includes("/bugs")
-                  ? styles.mainMenuLinkActive
-                  : styles.mainMenuLink
-              }
-            >
-              <Image
-                src={myProductsIcon}
-                className={styles.menuIcon}
-                width={22}
-              />
+            {products.length !== 0 &&
+              products.map((product) => (
+                <Link
+                  href={`/products/${product.slug}/bugs`}
+                  className={
+                    linkIsActive(product, bugs, urlPath)
+                      ? styles.productIconLinkActive
+                      : styles.productIconLink
+                  }
+                >
+                  <div className={styles.productIconWrapper}>
+                    <Image
+                      src={product.icon}
+                      width={56}
+                      height={56}
+                      className={styles.productIcon}
+                    />
+                  </div>
+                </Link>
+              ))}
+            <Link href="/products/new" className={styles.newProductIconWrapper}>
+              <Image src={plusIcon} className={styles.menuIcon} width={12} />
             </Link>
           </div>
           {session ? (
             <div className={styles.bottom}>
               <div className={styles.user}>
                 <Image
-                  //src={userPicture}
                   src={session.user.image}
                   width={40}
                   height={40}
@@ -136,6 +161,21 @@ export async function getServerSideProps(context) {
   };
 }
 
+function linkIsActive(product, bugs, currentRoute) {
+  let activeValue = false;
+
+  if (currentRoute.includes(`/products/${product.slug}`)) {
+    activeValue = true;
+  }
+
+  bugs.map((bug) => {
+    if (currentRoute.includes(`/bugs/${bug}`)) {
+      activeValue = true;
+    }
+  });
+  return activeValue;
+}
+
 async function getProducts(session) {
   const userInstance = doc(db, "users", session.user.id);
   const userSnap = await getDoc(userInstance);
@@ -143,7 +183,7 @@ async function getProducts(session) {
 
   let products = [];
 
-  await Promise.all(
+  const promiseee = await Promise.all(
     productsId.map(async (productId) => {
       const productRef = doc(db, "products", productId);
       const productSnap = await getDoc(productRef);
@@ -153,29 +193,7 @@ async function getProducts(session) {
         products.push(newProduct);
       }
     })
-  );
-
-  console.log("products");
-  console.log(products);
-
-  return JSON.parse(JSON.stringify(products));
+  ).then(() => {
+    return products;
+  });
 }
-
-/*
-<Link
-              href="/products"
-              className={
-                //currentRoute === "/products"
-                currentRoute.includes("/products") ||
-                currentRoute.includes("/bugs")
-                  ? styles.mainMenuLinkActive
-                  : styles.mainMenuLink
-              }
-            >
-              <Image
-                src={myProductsIcon}
-                className={styles.menuIcon}
-                width={22}
-              />
-            </Link>
-*/

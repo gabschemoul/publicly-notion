@@ -74,8 +74,6 @@ export default function index({ bug, product, bugId, productId }) {
     statusNameRef.current.innerText = currentStatus;
     statusWrapperRef.current.className = statusColor(currentStatus);
 
-    console.log(bugId);
-
     (async () => {
       const bugInstance = doc(db, "bugs", bugId);
 
