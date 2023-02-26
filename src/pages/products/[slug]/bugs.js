@@ -76,6 +76,12 @@ export async function getServerSideProps(context) {
     }
   });
 
+  if (!product) {
+    return {
+      notFound: true,
+    };
+  }
+
   const bugsId = product.bugs;
   let bugsList = [];
 

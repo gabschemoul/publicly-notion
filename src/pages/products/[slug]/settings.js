@@ -339,6 +339,12 @@ export async function getServerSideProps(context) {
     }
   });
 
+  if (!product) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
       product: JSON.parse(JSON.stringify(product)),

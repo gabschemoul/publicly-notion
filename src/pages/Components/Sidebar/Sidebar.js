@@ -5,18 +5,17 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import styles from "./Sidebar.module.css";
-import { signIn, signOut, useSession, getSession } from "next-auth/react";
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { signOut, useSession, getSession } from "next-auth/react";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
+import { Tooltip } from "@nextui-org/react";
+
 import publiclyLogo from "../../../../public/assets/logos/publicly-icon.svg";
-import userPicture from "../../../../public/assets/gabriel.png";
 import dotsMenuVertical from "../../../../public/assets/icons/3-dots-menu-icon.svg";
 import settingsIcon from "../../../../public/assets/icons/settingsIconV2.svg";
-import myProductsIcon from "../../../../public/assets/icons/my-products-icon.svg";
 import helpCenterIcon from "../../../../public/assets/icons/help-center-icon.svg";
 import plusIcon from "../../../../public/assets/icons/plusIcon.svg";
-import settings from "@/pages/products/[slug]/settings";
 
 export default function Sidebar(props) {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -79,27 +78,44 @@ export default function Sidebar(props) {
           <div className={styles.mainMenuWrapper}>
             {products.length !== 0 &&
               products.map((product) => (
-                <Link
-                  href={`/products/${product.slug}/bugs`}
-                  className={
-                    linkIsActive(product, bugs, urlPath)
-                      ? styles.productIconLinkActive
-                      : styles.productIconLink
-                  }
+                <Tooltip
+                  content={product.name}
+                  placement="right"
+                  css={{ borderRadius: "4px" }}
+                  offset={16}
                 >
-                  <div className={styles.productIconWrapper}>
-                    <Image
-                      src={product.icon}
-                      width={56}
-                      height={56}
-                      className={styles.productIcon}
-                    />
-                  </div>
-                </Link>
+                  <Link
+                    href={`/products/${product.slug}/bugs`}
+                    className={
+                      linkIsActive(product, bugs, urlPath)
+                        ? styles.productIconLinkActive
+                        : styles.productIconLink
+                    }
+                  >
+                    <div className={styles.productIconWrapper}>
+                      <Image
+                        src={product.icon}
+                        width={56}
+                        height={56}
+                        className={styles.productIcon}
+                      />
+                    </div>
+                  </Link>
+                </Tooltip>
               ))}
-            <Link href="/products/new" className={styles.newProductIconWrapper}>
-              <Image src={plusIcon} className={styles.menuIcon} width={12} />
-            </Link>
+            <Tooltip
+              content={"New product"}
+              placement="right"
+              css={{ borderRadius: "4px" }}
+              offset={16}
+            >
+              <Link
+                href="/products/new"
+                className={styles.newProductIconWrapper}
+              >
+                <Image src={plusIcon} className={styles.menuIcon} width={12} />
+              </Link>
+            </Tooltip>
           </div>
           {session ? (
             <div className={styles.bottom}>
@@ -117,12 +133,28 @@ export default function Sidebar(props) {
                   className={styles.dotsMenuWrapper}
                   onClick={() => openMenu()}
                 >
-                  <Image
-                    src={settingsIcon}
-                    alt=""
-                    width={18}
-                    className={styles.sidenavMenuIcon}
-                  />
+                  {menuOpened ? (
+                    <Image
+                      src={settingsIcon}
+                      alt=""
+                      width={18}
+                      className={styles.sidenavMenuIcon}
+                    />
+                  ) : (
+                    <Tooltip
+                      content={"Settings"}
+                      placement="right"
+                      css={{ borderRadius: "4px" }}
+                      offset={16}
+                    >
+                      <Image
+                        src={settingsIcon}
+                        alt=""
+                        width={18}
+                        className={styles.sidenavMenuIcon}
+                      />
+                    </Tooltip>
+                  )}
                 </div>
                 <div
                   className={styles.menuWrapper}

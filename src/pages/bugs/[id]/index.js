@@ -312,6 +312,12 @@ export async function getServerSideProps(context) {
   const docSnap = await getDoc(docRef);
   const bug = docSnap.data();
 
+  if (!bug) {
+    return {
+      notFound: true,
+    };
+  }
+
   const docRef2 = doc(db, "products", bug.productId);
   const docSnap2 = await getDoc(docRef2);
   const product = docSnap2.data();
