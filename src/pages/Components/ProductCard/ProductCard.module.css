@@ -7,13 +7,13 @@
 .card {
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
+  row-gap: 15px;
   align-items: stretch;
   height: 100%;
   /*width: 30%;*/
   background-color: white;
   padding: 30px;
-  border-radius: 20px;
+  border-radius: 12px;
   border: 1px solid rgba(167, 87, 246, 0);
   box-shadow: 0px 0px 20px 10px rgba(167, 87, 246, 0);
   transition: all 100ms ease-in-out;
@@ -27,18 +27,19 @@
 .productInfos {
   display: flex;
   flex-direction: column;
-  row-gap: 5px;
+  row-gap: 8px;
 }
 
 .name {
   color: black;
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 900;
 }
 
 .tagline {
   color: grey;
-  font-size: 16px;
+  font-size: 14px;
+  line-height: 1.3em;
 }
 
 .productIcon {

@@ -45,17 +45,22 @@ export default function index({ bug, product, bugId, productId }) {
   };
 
   const statusColor = (status) => {
+    console.log(status);
     switch (status) {
       case "Reported":
+        console.log("ici");
         return styles.statusDot + " " + styles.reported;
         break;
       case "In progress":
+        console.log("ici2");
         return styles.statusDot + " " + styles.inProgress;
         break;
       case "Resolved":
+        console.log("ici3");
         return styles.statusDot + " " + styles.resolved;
         break;
       default:
+        console.log("ici4");
         return styles.statusDot + " " + styles.resolved;
     }
   };

@@ -24,7 +24,7 @@ import {
 import { useSession, getSession } from "next-auth/react";
 
 import styles from "./NewProductForm.module.css";
-import plusIcon from "../../../../public/assets/icons/plus-icon.svg";
+import plusIcon from "../../../../public/assets/icons/plusIcon.svg";
 
 export default function NewProductForm(props) {
   const [newProduct, setNewProduct] = useState({
@@ -107,28 +107,31 @@ export default function NewProductForm(props) {
   }, [newFile]);
 
   const handleUpload = () => {
-    const storageRef = ref(storage, `/files/${newFile.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, newFile);
+    if (newFile !== undefined) {
+      const storageRef = ref(storage, `/files/${newFile.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, newFile);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        //console.log("Upload is " + progress + "% done");
-      },
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setNewProduct((prev) => {
-            return { ...prev, icon: downloadURL };
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          //console.log("Upload is " + progress + "% done");
+        },
+        (error) => {
+          console.log(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setNewProduct((prev) => {
+              return { ...prev, icon: downloadURL };
+            });
+            setUploadedIcon(downloadURL);
+            //console.log("File available at", downloadURL);
           });
-          //console.log("File available at", downloadURL);
-        });
-      }
-    );
+        }
+      );
+    }
   };
 
   const handleClick = (e) => {
@@ -139,13 +142,42 @@ export default function NewProductForm(props) {
 
   useEffect(() => {
     nameInputRef.current.focus();
+    uploadedIconWrapperRef.current.style.display = "none";
   }, []);
 
-  const [validSlug, setValidSlug] = useState(true);
+  const [validSlug, setValidSlug] = useState(false);
   const slugRef = useRef();
   const errorSlugRef = useRef();
+  const errorCharSlugRef = useRef();
 
   const handleSlugChange = (e) => {
+    if (
+      e.target.value.match("^[a-z0-9]+(?:-[a-z0-9]+)*$") ||
+      e.target.value.length === 0
+    ) {
+      errorCharSlugRef.current.style.display = "none";
+      setValidSlug(true);
+    } else {
+      errorCharSlugRef.current.style.display = "block";
+      setValidSlug(false);
+      setNewProduct((prev) => {
+        const key = e.target.name;
+        const value = e.target.value;
+        return { ...prev, [key]: value };
+      });
+      return false;
+    }
+
+    if (e.target.value.length === 0) {
+      setValidSlug(false);
+      setNewProduct((prev) => {
+        const key = e.target.name;
+        const value = e.target.value;
+        return { ...prev, [key]: value };
+      });
+      return false;
+    }
+
     setNewProduct((prev) => {
       const key = e.target.name;
       const value = e.target.value;
@@ -187,6 +219,29 @@ export default function NewProductForm(props) {
     }
   }, [validSlug]);
 
+  const [uploadedIcon, setUploadedIcon] = useState("");
+  const uploadedIconRef = useRef();
+  const uploadedIconWrapperRef = useRef();
+  const uploadIconRef = useRef();
+  const [firstLoad, setFirstLoad] = useState(true);
+
+  useEffect(() => {
+    uploadedIconRef.current.style.backgroundImage = "url(" + uploadedIcon + ")";
+    console.log("uploadedIcon");
+    console.log(uploadedIcon);
+    if (uploadedIcon.includes("undefined") && uploadedIcon.length !== 0) {
+      uploadIconRef.current.style.display = "flex";
+      uploadedIconWrapperRef.current.style.display = "none";
+    } else {
+      if (firstLoad) {
+        setFirstLoad(false);
+      } else {
+        uploadIconRef.current.style.display = "none";
+        uploadedIconWrapperRef.current.style.display = "flex";
+      }
+    }
+  }, [uploadedIcon]);
+
   return (
     <>
       <Head>
@@ -194,7 +249,7 @@ export default function NewProductForm(props) {
         <meta name="description" content="The user feedback management tool" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div className="container">
+      <div className={styles.container}>
         <h1>Create a new product</h1>
         <form action="" onSubmit={handleSubmit} className={styles.form}>
           <input
@@ -205,15 +260,36 @@ export default function NewProductForm(props) {
             style={{ display: "none" }}
             ref={uploadRef}
           />
-          <div className={styles.iconUpload} onClick={() => handleClick()}>
-            <Image src={plusIcon} width={20} height={20} />
-            <p>Upload your product logo (square)</p>
+          <div
+            className={styles.iconUpload}
+            onClick={() => handleClick()}
+            ref={uploadIconRef}
+          >
+            <Image src={plusIcon} width={16} height={16} />
+            <p>Upload your product logo</p>
+          </div>
+          <div
+            className={styles.uploadedIconWrapper}
+            ref={uploadedIconWrapperRef}
+          >
+            <div
+              className={styles.uploadedIcon}
+              style={{ backgroundImage: "url(" + uploadedIcon + ")" }}
+              ref={uploadedIconRef}
+            ></div>
+            <button
+              className={styles.changeIconButton}
+              onClick={() => handleClick()}
+            >
+              Change
+            </button>
           </div>
           <input
             type="text"
             id="name"
             name="name"
             placeholder="Name"
+            maxLength={100}
             value={newProduct.name}
             onChange={handleChange}
             ref={nameInputRef}
@@ -224,6 +300,7 @@ export default function NewProductForm(props) {
             id="tagline"
             name="tagline"
             placeholder="Tagline"
+            maxLength={200}
             value={newProduct.tagline}
             onChange={handleChange}
           />
@@ -244,7 +321,14 @@ export default function NewProductForm(props) {
           >
             This slug is already used by another product. Choose another one.
           </p>
-          <button type="submit" ref={submitRef}>
+          <p
+            className={styles.errorSlug}
+            style={{ display: "none" }}
+            ref={errorCharSlugRef}
+          >
+            Invalid character.
+          </p>
+          <button type="submit" className={styles.submitButton} ref={submitRef}>
             Create product
           </button>
         </form>
