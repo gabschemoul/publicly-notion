@@ -35,6 +35,7 @@ export default function settings({ product }) {
   const slugRef = useRef();
   const errorSlugRef = useRef();
   const submitRef = useRef();
+  const errorCharSlugRef = useRef();
 
   const router = useRouter();
 
@@ -47,6 +48,33 @@ export default function settings({ product }) {
   };
 
   const handleSlugChange = (e) => {
+    if (
+      e.target.value.match("^[a-z0-9]+(?:-[a-z0-9]+)*$") ||
+      e.target.value.length === 0
+    ) {
+      errorCharSlugRef.current.style.display = "none";
+      setValidSlug(true);
+    } else {
+      errorCharSlugRef.current.style.display = "block";
+      setValidSlug(false);
+      setNewProduct((prev) => {
+        const key = e.target.name;
+        const value = e.target.value;
+        return { ...prev, [key]: value };
+      });
+      return false;
+    }
+
+    if (e.target.value.length === 0) {
+      setValidSlug(false);
+      setNewProduct((prev) => {
+        const key = e.target.name;
+        const value = e.target.value;
+        return { ...prev, [key]: value };
+      });
+      return false;
+    }
+
     setNewProduct((prev) => {
       const key = e.target.name;
       const value = e.target.value;
@@ -239,6 +267,7 @@ export default function settings({ product }) {
                   id="name"
                   placeholder="Name"
                   value={newProduct.name}
+                  maxLength={100}
                   className={styles.input}
                   onChange={handleChange}
                   required
@@ -254,6 +283,7 @@ export default function settings({ product }) {
                   name="tagline"
                   id="tagline"
                   placeholder="Tagline"
+                  maxLength={200}
                   value={newProduct.tagline}
                   className={styles.input}
                   onChange={handleChange}
@@ -270,35 +300,54 @@ export default function settings({ product }) {
                   id="slug"
                   placeholder="Slug"
                   value={newProduct.slug}
+                  maxLength={100}
                   className={styles.input}
                   onChange={handleSlugChange}
                   ref={slugRef}
                   required
                 />
+                <p
+                  className={styles.errorSlug}
+                  style={{ display: "none" }}
+                  ref={errorSlugRef}
+                >
+                  This slug is already used by another product. Choose another
+                  one.
+                </p>
+                <p
+                  className={styles.errorSlug}
+                  style={{ display: "none" }}
+                  ref={errorCharSlugRef}
+                >
+                  Invalid character.
+                </p>
               </div>
-              <p
-                className={styles.errorSlug}
-                style={{ display: "none" }}
-                ref={errorSlugRef}
-              >
-                This slug is already used by another product. Choose another
-                one.
-              </p>
-
               <button type="submit" ref={submitRef}>
                 Save
               </button>
             </form>
             <div className={styles.dangerZone}>
               <h2>Danger zone</h2>
-              <div onClick={showDeletePopup}>Delete my product</div>
+              <button className={styles.deleteButton} onClick={showDeletePopup}>
+                Delete my product
+              </button>
             </div>
             <div className={styles.deletePopup} ref={deletePopupRef}>
               <div className={styles.deletePopupCard}>
                 <h2>Are you sure you want to delete {product.name}</h2>
                 <div className={styles.choices}>
-                  <button onClick={deleteProduct}>Yes</button>
-                  <button onClick={hideDeletePopup}>Cancel</button>
+                  <button
+                    className={styles.deleteProductButton}
+                    onClick={deleteProduct}
+                  >
+                    Yes
+                  </button>
+                  <button
+                    className={styles.notDeleteProductButton}
+                    onClick={hideDeletePopup}
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>

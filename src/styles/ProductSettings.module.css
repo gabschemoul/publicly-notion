@@ -46,10 +46,26 @@
   background-size: cover;
 }
 
+.changeLogo {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 6px 10px;
+  transition: all 100ms ease-in-out;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 900;
+  font-family: Menlo;
+  font-size: 13px;
+}
+.changeLogo:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
 .form input {
   height: 50px;
   border-radius: 10px;
-  padding-left: 30px;
+  padding-left: 20px;
   font-size: 16px;
   background-color: #212327;
   border: 1px solid rgba(108, 108, 108, 0.3);
@@ -60,7 +76,7 @@
 }
 
 .form input:hover {
-  border: 1px solid rgba(108, 108, 108, 0.5);
+  border: 1px solid rgba(108, 108, 108, 0.6);
 }
 
 .form input:focus {
@@ -97,7 +113,25 @@
 .dangerZone {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   row-gap: 30px;
+}
+
+.deleteButton {
+  height: 50px;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+  color: white;
+  padding: 0 20px;
+  transition: all 100ms ease-in-out;
+  letter-spacing: 0.5px;
+  background-color: #f03d3d;
+}
+.deleteButton:hover {
+  box-shadow: 0px 0px 20px rgba(240, 61, 61, 0.4);
 }
 
 .deletePopup {
@@ -116,13 +150,40 @@
   background-color: white;
   display: flex;
   flex-direction: column;
-  padding: 50px;
+  padding: 30px;
   color: black;
   border-radius: 20px;
-  row-gap: 20px;
+  row-gap: 30px;
+  font-weight: 900;
 }
 
 .choices {
   display: flex;
-  column-gap: 20px;
+  column-gap: 10px;
+}
+
+.deleteProductButton {
+  height: 40px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  color: white;
+  padding: 0 20px;
+  transition: all 100ms ease-in-out;
+  background-color: black;
+}
+
+.notDeleteProductButton {
+  height: 40px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  color: rgba(0, 0, 0, 0.8);
+  padding: 0 20px;
+  transition: all 100ms ease-in-out;
+  background-color: rgba(0, 0, 0, 0.15);
 }

@@ -310,6 +310,7 @@ export default function NewProductForm(props) {
             name="slug"
             placeholder="Slug"
             value={newProduct.slug}
+            maxLength={100}
             onChange={handleSlugChange}
             ref={slugRef}
             required
