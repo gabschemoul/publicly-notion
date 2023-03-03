@@ -11,12 +11,12 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
-import styles from "@/styles/Bugs.module.css";
+import styles from "@/styles/Feedbacks.module.css";
 
 import ProductNav from "@/pages/Components/ProductNav/ProductNav";
-import BugCard from "@/pages/Components/BugCard/BugCard";
+import FeedbackCard from "@/pages/Components/FeedbackCard/FeedbackCard";
 
-export default function bugs({ product, bugs }) {
+export default function feedbacks({ product, feedbacks }) {
   return (
     <>
       <Head>
@@ -29,16 +29,16 @@ export default function bugs({ product, bugs }) {
       <div className={styles.productSubContainer}>
         <ProductNav product={product} />
         <div className={styles.container}>
-          <h1 className={styles.subTitle}>Bugs</h1>
-          <div className={styles.bugsList}>
-            {bugs.length > 0 ? (
-              bugs.map((bug) => (
-                <Link href={`/bugs/${bug.id}`}>
-                  <BugCard key={bug.id} bug={bug} />
+          <h1 className={styles.subTitle}>Feedback</h1>
+          <div className={styles.feedbacksList}>
+            {feedbacks.length > 0 ? (
+              feedbacks.map((feedback) => (
+                <Link href={`/feedbacks/${feedback.id}`}>
+                  <FeedbackCard key={feedback.id} feedback={feedback} />
                 </Link>
               ))
             ) : (
-              <p className={styles.noBugs}>No bugs yet.</p>
+              <p className={styles.noFeedbacks}>No feedback yet.</p>
             )}
           </div>
         </div>
@@ -82,17 +82,17 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const bugsId = product.bugs;
-  let bugsList = [];
+  const feedbacksId = product.feedbacks;
+  let feedbacksList = [];
 
   await Promise.all(
-    bugsId.map(async (bugId) => {
-      const bugRef = doc(db, "bugs", bugId);
-      const bugSnap = await getDoc(bugRef);
-      const newBug = bugSnap.data();
-      if (newBug.active) {
-        newBug.id = bugId;
-        bugsList.push(newBug);
+    feedbacksId.map(async (feedbackId) => {
+      const feedbackRef = doc(db, "feedbacks", feedbackId);
+      const feedbackSnap = await getDoc(feedbackRef);
+      const newFeedback = feedbackSnap.data();
+      if (newFeedback.active) {
+        newFeedback.id = feedbackId;
+        feedbacksList.push(newFeedback);
       }
     })
   );
@@ -100,7 +100,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       product: JSON.parse(JSON.stringify(product)),
-      bugs: JSON.parse(JSON.stringify(bugsList)),
+      feedbacks: JSON.parse(JSON.stringify(feedbacksList)),
     },
   };
 }

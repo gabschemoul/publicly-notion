@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import styles from "./ProductNav.module.css";
 
+import feedbackIcon from "../../../../public/assets/icons/starIcon.svg";
 import bugIcon from "../../../../public/assets/icons/bugIcon.svg";
 import settingsIcon from "../../../../public/assets/icons/settingsIcon.svg";
 import newTabIcon from "../../../../public/assets/icons/newTabIcon.svg";
@@ -27,6 +28,18 @@ export default function ProductNav(props) {
         </div>
         <div className={styles.menuWrapper}>
           <Link
+            href={`/products/${props.product.slug}/feedbacks`}
+            className={
+              //router.pathname === "/products/[slug]/bugs"
+              router.pathname.includes("feedbacks")
+                ? styles.activeLink
+                : styles.menuLink
+            }
+          >
+            <Image src={feedbackIcon} className={styles.menuIcon} width={16} />
+            <p className={styles.menuLinkText}>Feedback</p>
+          </Link>
+          <Link
             href={`/products/${props.product.slug}/bugs`}
             className={
               //router.pathname === "/products/[slug]/bugs"
@@ -38,6 +51,7 @@ export default function ProductNav(props) {
             <Image src={bugIcon} className={styles.menuIcon} width={16} />
             <p className={styles.menuLinkText}>Bugs</p>
           </Link>
+
           <Link
             href={`/products/${props.product.slug}/settings`}
             className={

@@ -65,7 +65,7 @@
   width: 42px;
   height: 42px;
   border-radius: 8px;
-  box-shadow: 0 0 0 1px #a657f6;
+  box-shadow: 0 0 0 1px #a657f6, 0 0 7px 3px rgba(167, 87, 246, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;

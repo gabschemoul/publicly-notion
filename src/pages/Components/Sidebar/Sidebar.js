@@ -21,6 +21,7 @@ export default function Sidebar(props) {
   const [menuOpened, setMenuOpened] = useState(false);
   const [products, setProducts] = useState([]);
   const [bugs, setBugs] = useState([]);
+  const [feedbacks, setFeedbacks] = useState([]);
 
   const openMenu = () => {
     setMenuOpened(!menuOpened);
@@ -39,6 +40,7 @@ export default function Sidebar(props) {
 
       let allProducts = [];
       let allBugs = [];
+      let allFeedbacks = [];
 
       const promiseee = await Promise.all(
         productsId.map(async (productId) => {
@@ -52,11 +54,15 @@ export default function Sidebar(props) {
             newProduct.bugs.map((bug) => {
               allBugs.push(bug);
             });
+            newProduct.feedbacks.map((feedback) => {
+              allFeedbacks.push(feedback);
+            });
           }
         })
       ).then(() => {
         setProducts(allProducts);
         setBugs(allBugs);
+        setFeedbacks(allFeedbacks);
       });
     })();
   }, [session]);
@@ -87,7 +93,7 @@ export default function Sidebar(props) {
                   <Link
                     href={`/products/${product.slug}/bugs`}
                     className={
-                      linkIsActive(product, bugs, urlPath)
+                      linkIsActive(product, bugs, feedbacks, urlPath)
                         ? styles.productIconLinkActive
                         : styles.productIconLink
                     }
@@ -193,7 +199,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-function linkIsActive(product, bugs, currentRoute) {
+function linkIsActive(product, bugs, feedbacks, currentRoute) {
   let activeValue = false;
 
   if (currentRoute.includes(`/products/${product.slug}`)) {
@@ -202,6 +208,11 @@ function linkIsActive(product, bugs, currentRoute) {
 
   bugs.map((bug) => {
     if (currentRoute.includes(`/bugs/${bug}`)) {
+      activeValue = true;
+    }
+  });
+  feedbacks.map((feedback) => {
+    if (currentRoute.includes(`/feedbacks/${feedback}`)) {
       activeValue = true;
     }
   });

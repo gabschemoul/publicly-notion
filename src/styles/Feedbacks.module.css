@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 25px;
+  padding-top: 20px;
+  flex-grow: 1;
+}
+
+.productSubContainer {
+  display: flex;
+  column-gap: 20px;
+  align-items: flex-start;
+}
+
+.subTitle {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+
+.feedbacksList {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 100%;
+}
+
+.noFeedbacks {
+  color: rgba(255, 255, 255, 0.6);
+}
