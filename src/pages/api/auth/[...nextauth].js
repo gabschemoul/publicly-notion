@@ -42,9 +42,9 @@ export default NextAuth({
     strategy: "jwt",
   },
   useSecureCookies: false, // using false while local development
-  jwt: {
+  /*jwt: {
     secret: process.env.NEXTAUTH_SECRET,
-  },
+  },*/
   callbacks: {
     //secret: process.env.NEXTAUTH_SECRET,
     async session({ session, token, user }) {
