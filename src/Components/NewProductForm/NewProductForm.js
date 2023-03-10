@@ -24,7 +24,7 @@ import {
 import { useSession, getSession } from "next-auth/react";
 
 import styles from "./NewProductForm.module.css";
-import plusIcon from "../../../../public/assets/icons/plusIcon.svg";
+import plusIcon from "../../../public/assets/icons/plusIcon.svg";
 
 export default function NewProductForm(props) {
   const [newProduct, setNewProduct] = useState({
@@ -33,6 +33,7 @@ export default function NewProductForm(props) {
     slug: "",
     icon: "",
     bugs: [],
+    feedbacks: [],
     active: true,
   });
 
@@ -259,13 +260,14 @@ export default function NewProductForm(props) {
             onChange={submitUpload}
             style={{ display: "none" }}
             ref={uploadRef}
+            accept="image/*"
           />
           <div
             className={styles.iconUpload}
             onClick={() => handleClick()}
             ref={uploadIconRef}
           >
-            <Image src={plusIcon} width={16} height={16} />
+            <Image src={plusIcon} width={16} height={16} alt="" />
             <p>Upload your product logo</p>
           </div>
           <div

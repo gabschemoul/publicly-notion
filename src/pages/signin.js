@@ -1,24 +1,75 @@
 import React from "react";
+import Image from "next/image";
+import Head from "next/head";
 import { getProviders, signIn } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth";
 
 import { firebaseConfig } from "../pages/api/auth/[...nextauth]";
+
+import Google from "../../public/assets/Signin/Google.png";
+import GitHub from "../../public/assets/Signin/github.svg";
+import publiclyIcon from "../../public/assets/logos/publicly-icon.svg";
 
 //import styles from "./signin.module.css";
 import styles from "@/styles/signin.module.css";
 
 export default function SignIn({ providers }) {
   return (
-    <div className={styles.container}>
-      <h1>Login to Publicly</h1>
-      {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <button onClick={() => signIn(provider.id)}>
-            Sign in with {provider.name}
-          </button>
+    <>
+      <Head>
+        <title>Sign in - Publicly</title>
+      </Head>
+
+      <div className={styles.container}>
+        <Image src={publiclyIcon} className={styles.icon} height={70} />
+        <div className={styles.signinWrapper}>
+          <h1>Welcome to Publicly</h1>
+          <p className={styles.subtitle}>Sign in to get started.</p>
+          <div className={styles.providersButtons}>
+            {Object.values(providers).map((provider) => {
+              switch (provider.id) {
+                case "google":
+                  return (
+                    <a
+                      className={styles.googleButton}
+                      onClick={() => signIn(provider.id)}
+                      key={provider.name}
+                    >
+                      <Image
+                        src={Google}
+                        width={30}
+                        height={30}
+                        alt="Google G logo"
+                      />
+                      <p>Sign in with {provider.name}</p>
+                    </a>
+                  );
+                  break;
+                case "github":
+                  return (
+                    <a
+                      className={styles.githubButton}
+                      onClick={() => signIn(provider.id)}
+                      key={provider.name}
+                    >
+                      <Image
+                        src={GitHub}
+                        width={30}
+                        height={30}
+                        alt="GitHub logo"
+                      />
+                      <p>Sign in with {provider.name}</p>
+                    </a>
+                  );
+                  break;
+                default:
+                  console.log("Default");
+              }
+            })}
+          </div>
         </div>
-      ))}
-    </div>
+      </div>
+    </>
   );
 }
 

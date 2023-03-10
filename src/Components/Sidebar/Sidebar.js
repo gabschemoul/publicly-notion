@@ -11,11 +11,11 @@ import { db } from "@/firebase/config";
 
 import { Tooltip } from "@nextui-org/react";
 
-import publiclyLogo from "../../../../public/assets/logos/publicly-icon.svg";
-import dotsMenuVertical from "../../../../public/assets/icons/3-dots-menu-icon.svg";
-import settingsIcon from "../../../../public/assets/icons/settingsIconV2.svg";
-import helpCenterIcon from "../../../../public/assets/icons/help-center-icon.svg";
-import plusIcon from "../../../../public/assets/icons/plusIcon.svg";
+import publiclyLogo from "../../../public/assets/logos/publicly-icon.svg";
+import dotsMenuVertical from "../../../public/assets/icons/3-dots-menu-icon.svg";
+import settingsIcon from "../../../public/assets/icons/settingsIconV2.svg";
+import helpCenterIcon from "../../../public/assets/icons/help-center-icon.svg";
+import plusIcon from "../../../public/assets/icons/plusIcon.svg";
 
 export default function Sidebar(props) {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -85,9 +85,10 @@ export default function Sidebar(props) {
             {products.length !== 0 &&
               products.map((product) => (
                 <Tooltip
+                  key={product.id}
                   content={product.name}
                   placement="right"
-                  css={{ borderRadius: "4px" }}
+                  css={{ borderRadius: "4px", fontWeight: "500" }}
                   offset={16}
                 >
                   <Link
@@ -104,6 +105,7 @@ export default function Sidebar(props) {
                         width={56}
                         height={56}
                         className={styles.productIcon}
+                        alt=""
                       />
                     </div>
                   </Link>
@@ -112,14 +114,19 @@ export default function Sidebar(props) {
             <Tooltip
               content={"New product"}
               placement="right"
-              css={{ borderRadius: "4px" }}
+              css={{ borderRadius: "4px", fontWeight: "500" }}
               offset={16}
             >
               <Link
                 href="/products/new"
                 className={styles.newProductIconWrapper}
               >
-                <Image src={plusIcon} className={styles.menuIcon} width={12} />
+                <Image
+                  src={plusIcon}
+                  className={styles.menuIcon}
+                  width={12}
+                  alt=""
+                />
               </Link>
             </Tooltip>
           </div>
@@ -150,7 +157,7 @@ export default function Sidebar(props) {
                     <Tooltip
                       content={"Settings"}
                       placement="right"
-                      css={{ borderRadius: "4px" }}
+                      css={{ borderRadius: "4px", fontWeight: "500" }}
                       offset={16}
                     >
                       <Image
@@ -166,9 +173,6 @@ export default function Sidebar(props) {
                   className={styles.menuWrapper}
                   style={{ display: menuOpened ? "flex" : "none" }}
                 >
-                  <Link href="/" className={styles.menuItem}>
-                    Biling
-                  </Link>
                   <div onClick={() => signOut()} className={styles.menuItem}>
                     Logout
                   </div>

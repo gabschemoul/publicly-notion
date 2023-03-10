@@ -1,5 +1,5 @@
 import "@/styles/globals.css";
-import Container from "./Components/Container/Container";
+import Container from "../Components/Container/Container";
 import { SessionProvider } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -10,11 +10,9 @@ function Loading() {
 
   useEffect(() => {
     const handleStart = (url) => {
-      console.log("Handle Start");
       url !== router.asPath && setLoading(true);
     };
     const handleComplete = (url) => {
-      console.log("Handle Complete");
       url === router.asPath && setLoading(false);
     };
 

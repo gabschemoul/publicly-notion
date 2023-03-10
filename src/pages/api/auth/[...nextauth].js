@@ -1,5 +1,6 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 import { FirestoreAdapter } from "@next-auth/firebase-adapter";
 import jwt from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
@@ -29,6 +30,10 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
   adapter: FirestoreAdapter(firebaseConfig),

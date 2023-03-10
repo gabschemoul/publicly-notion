@@ -5,10 +5,10 @@ import Image from "next/image";
 
 import styles from "./ProductNav.module.css";
 
-import feedbackIcon from "../../../../public/assets/icons/starIcon.svg";
-import bugIcon from "../../../../public/assets/icons/bugIcon.svg";
-import settingsIcon from "../../../../public/assets/icons/settingsIcon.svg";
-import newTabIcon from "../../../../public/assets/icons/newTabIcon.svg";
+import feedbackIcon from "../../../public/assets/icons/starIcon.svg";
+import bugIcon from "../../../public/assets/icons/bugIcon.svg";
+import settingsIcon from "../../../public/assets/icons/settingsIcon.svg";
+import newTabIcon from "../../../public/assets/icons/newTabIcon.svg";
 
 export default function ProductNav(props) {
   const router = useRouter();
@@ -36,7 +36,12 @@ export default function ProductNav(props) {
                 : styles.menuLink
             }
           >
-            <Image src={feedbackIcon} className={styles.menuIcon} width={16} />
+            <Image
+              src={feedbackIcon}
+              className={styles.menuIcon}
+              width={16}
+              alt=""
+            />
             <p className={styles.menuLinkText}>Feedback</p>
           </Link>
           <Link
@@ -48,7 +53,12 @@ export default function ProductNav(props) {
                 : styles.menuLink
             }
           >
-            <Image src={bugIcon} className={styles.menuIcon} width={16} />
+            <Image
+              src={bugIcon}
+              className={styles.menuIcon}
+              width={16}
+              alt=""
+            />
             <p className={styles.menuLinkText}>Bugs</p>
           </Link>
 
@@ -60,14 +70,25 @@ export default function ProductNav(props) {
                 : styles.menuLink
             }
           >
-            <Image src={settingsIcon} className={styles.menuIcon} width={16} />
+            <Image
+              src={settingsIcon}
+              className={styles.menuIcon}
+              width={16}
+              alt=""
+            />
             <p className={styles.menuLinkText}>Settings</p>
           </Link>
           <Link
             href={`https://publicly.so/products/${props.product.slug}`}
+            target="_blank"
             className={styles.menuLink}
           >
-            <Image src={newTabIcon} className={styles.menuIcon} width={16} />
+            <Image
+              src={newTabIcon}
+              className={styles.menuIcon}
+              width={16}
+              alt=""
+            />
             <p className={styles.menuLinkText}>View Public Page</p>
           </Link>
         </div>

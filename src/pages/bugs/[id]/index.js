@@ -7,7 +7,7 @@ import { getSession } from "next-auth/react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
-import ProductNav from "@/pages/Components/ProductNav/ProductNav";
+import ProductNav from "@/Components/ProductNav/ProductNav";
 
 import styles from "./index.module.css";
 import closeButton from "../../../../public/assets/icons/close-white.svg";
@@ -241,6 +241,7 @@ export default function index({ bug, product, bugId, productId }) {
             <div className={styles.attachmentsWrapper}>
               {bug.attachments.map((a, i) => (
                 <div
+                  key={i}
                   className={styles.attachmentWrapper}
                   style={{ backgroundImage: `url(${a})` }}
                   ref={(ref) => {

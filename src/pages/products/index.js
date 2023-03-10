@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 
-import ProductCard from "../Components/ProductCard/ProductCard";
+import ProductCard from "../../Components/ProductCard/ProductCard";
 import { db } from "@/firebase/config";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -36,7 +36,7 @@ export default function index({ products }) {
               />
             ))}
           <Link href="/products/new" className={styles.newProductCard}>
-            <Image src={plusIcon} width={20} height={20} />
+            <Image src={plusIcon} width={20} height={20} alt="" />
             <p>New product</p>
           </Link>
         </div>

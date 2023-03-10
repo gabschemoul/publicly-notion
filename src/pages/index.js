@@ -8,9 +8,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Publicly - The best user feedback management tool</title>
-        <meta name="description" content="The user feedback management tool" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Publicly - User feedback management tool</title>
       </Head>
       <div>
         {!(status === "authenticated") && <p>Not connected</p>}

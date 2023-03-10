@@ -21,7 +21,7 @@ import {
 
 import styles from "@/styles/ProductSettings.module.css";
 
-import ProductNav from "@/pages/Components/ProductNav/ProductNav";
+import ProductNav from "@/Components/ProductNav/ProductNav";
 
 export default function settings({ product }) {
   const [newProduct, setNewProduct] = useState(product);
@@ -233,7 +233,7 @@ export default function settings({ product }) {
           <div className={styles.settingsList}>
             <form action="" onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.settingsLine}>
-                <label for="icon" className={styles.label}>
+                <label htmlFor="icon" className={styles.label}>
                   Logo
                 </label>
                 <div
@@ -258,7 +258,7 @@ export default function settings({ product }) {
               </div>
 
               <div className={styles.settingsLine}>
-                <label for="name" className={styles.label}>
+                <label htmlFor="name" className={styles.label}>
                   Name
                 </label>
                 <input
@@ -275,7 +275,7 @@ export default function settings({ product }) {
               </div>
 
               <div className={styles.settingsLine}>
-                <label for="tagline" className={styles.label}>
+                <label htmlFor="tagline" className={styles.label}>
                   Tagline
                 </label>
                 <input
@@ -291,7 +291,7 @@ export default function settings({ product }) {
               </div>
 
               <div className={styles.settingsLine}>
-                <label for="" className={styles.label}>
+                <label htmlFor="slug" className={styles.label}>
                   Slug
                 </label>
                 <input

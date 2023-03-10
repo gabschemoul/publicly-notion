@@ -20,7 +20,7 @@ export default function FeedbackCard(props) {
   return (
     <div className={styles.card}>
       <div className={styles.cardLeft}>
-        <p className={styles.title}>{feedback.title}</p>
+        <p className={styles.title}>{feedback.description}</p>
       </div>
       <div className={styles.cardRight}>
         <p>{dateFormat}</p>

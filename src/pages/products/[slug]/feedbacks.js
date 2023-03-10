@@ -13,8 +13,8 @@ import { db } from "@/firebase/config";
 
 import styles from "@/styles/Feedbacks.module.css";
 
-import ProductNav from "@/pages/Components/ProductNav/ProductNav";
-import FeedbackCard from "@/pages/Components/FeedbackCard/FeedbackCard";
+import ProductNav from "@/Components/ProductNav/ProductNav";
+import FeedbackCard from "@/Components/FeedbackCard/FeedbackCard";
 
 export default function feedbacks({ product, feedbacks }) {
   return (
@@ -33,7 +33,7 @@ export default function feedbacks({ product, feedbacks }) {
           <div className={styles.feedbacksList}>
             {feedbacks.length > 0 ? (
               feedbacks.map((feedback) => (
-                <Link href={`/feedbacks/${feedback.id}`}>
+                <Link key={feedback.id} href={`/feedbacks/${feedback.id}`}>
                   <FeedbackCard key={feedback.id} feedback={feedback} />
                 </Link>
               ))

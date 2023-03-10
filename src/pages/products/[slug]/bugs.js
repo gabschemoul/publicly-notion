@@ -13,8 +13,8 @@ import { db } from "@/firebase/config";
 
 import styles from "@/styles/Bugs.module.css";
 
-import ProductNav from "@/pages/Components/ProductNav/ProductNav";
-import BugCard from "@/pages/Components/BugCard/BugCard";
+import ProductNav from "@/Components/ProductNav/ProductNav";
+import BugCard from "@/Components/BugCard/BugCard";
 
 export default function bugs({ product, bugs }) {
   return (
@@ -33,7 +33,7 @@ export default function bugs({ product, bugs }) {
           <div className={styles.bugsList}>
             {bugs.length > 0 ? (
               bugs.map((bug) => (
-                <Link href={`/bugs/${bug.id}`}>
+                <Link key={bug.id} href={`/bugs/${bug.id}`}>
                   <BugCard key={bug.id} bug={bug} />
                 </Link>
               ))

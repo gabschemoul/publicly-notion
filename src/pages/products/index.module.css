@@ -35,7 +35,7 @@
   font-size: 20px;
   min-height: 200px;
   margin-bottom: 2%;
-  transition: all 100ms ease-in-out;
+  transition: all 200ms ease-out;
 }
 
 .newProductCard:hover {

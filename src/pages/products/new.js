@@ -1,7 +1,7 @@
 import React from "react";
 import { getSession } from "next-auth/react";
 
-import NewProductForm from "../Components/NewProductForm/NewProductForm";
+import NewProductForm from "../../Components/NewProductForm/NewProductForm";
 
 export default function createProduct() {
   return (
