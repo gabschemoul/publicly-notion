@@ -79,7 +79,7 @@ export default function ProductNav(props) {
             <p className={styles.menuLinkText}>Settings</p>
           </Link>
           <Link
-            href={`https://publicly.so/products/${props.product.slug}`}
+            href={`https://publicly.vercel.app/products/${props.product.slug}`}
             target="_blank"
             className={styles.menuLink}
           >
