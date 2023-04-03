@@ -57,10 +57,7 @@ export default NextAuth({
       return token;
     },
     async redirect({ url, baseUrl }) {
-      console.log("url");
-      console.log(url);
-      console.log("baseUrl");
-      console.log(baseUrl);
+      return `${baseUrl}/products`;
     },
   },
   events: {
