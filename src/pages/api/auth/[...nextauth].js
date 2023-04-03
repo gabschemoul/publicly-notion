@@ -60,7 +60,7 @@ export default NextAuth({
     },
   },
   events: {
-    createUser({ user }) {
+    async createUser({ user }) {
       /* Mettre une image par défaut
       if(!user.image) {
         user.image = 
@@ -71,14 +71,19 @@ export default NextAuth({
         role: "maker",
       };
 
+      console.log("newUser");
+      console.log(newUser);
+
       const router = useRouter();
 
       const userInstance = doc(db, "users", user.id);
-      setDoc(userInstance, newUser);
+      await setDoc(userInstance, newUser).then(() => {
+        console.log("User created!");
 
-      sendEmailToNewUser(user.email);
+        sendEmailToNewUser(user.email);
 
-      router.push("/products/new");
+        router.push("/products/new");
+      });
     },
   },
   pages: {
