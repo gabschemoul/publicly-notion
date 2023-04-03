@@ -3,16 +3,10 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import { FirestoreAdapter } from "@next-auth/firebase-adapter";
 import jwt from "jsonwebtoken";
-import { JWT } from "next-auth/jwt";
 
-import {
-  collection,
-  addDoc,
-  Timestamp,
-  doc,
-  setDoc,
-  getDoc,
-} from "firebase/firestore";
+import { useRouter } from "next/router";
+
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
 import { sendEmailToNewUser } from "@/utils/email";
@@ -77,10 +71,14 @@ export default NextAuth({
         role: "maker",
       };
 
+      const router = useRouter();
+
       const userInstance = doc(db, "users", user.id);
       setDoc(userInstance, newUser);
 
       sendEmailToNewUser(user.email);
+
+      router.push("/products/new");
     },
   },
   pages: {
