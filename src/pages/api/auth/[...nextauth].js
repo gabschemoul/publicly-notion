@@ -56,6 +56,12 @@ export default NextAuth({
 
       return token;
     },
+    async redirect({ url, baseUrl }) {
+      console.log("url");
+      console.log(url);
+      console.log("baseUrl");
+      console.log(baseUrl);
+    },
   },
   events: {
     async createUser({ user }) {
@@ -69,12 +75,8 @@ export default NextAuth({
         role: "maker",
       };
 
-      console.log("newUser");
-      console.log(newUser);
-
       const userInstance = doc(db, "users", user.id);
       await setDoc(userInstance, newUser).then(() => {
-        console.log("User created!");
         sendEmailToNewUser(user.email);
       });
     },
