@@ -58,7 +58,26 @@ export async function getServerSideProps(context) {
   }
   const userInstance = doc(db, "users", session.user.id);
   const userSnap = await getDoc(userInstance);
+
+  if (!userSnap.data()) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
+  }
+
   const productsId = userSnap.data().productsId;
+
+  if (!productsId.length) {
+    return {
+      redirect: {
+        destination: "/products/new",
+        permanent: false,
+      },
+    };
+  }
 
   let products = [];
 

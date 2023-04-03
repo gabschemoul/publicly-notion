@@ -43,7 +43,9 @@
   width: 70px;
   height: 70px;
   border-radius: 10px;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .changeLogo {

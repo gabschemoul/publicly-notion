@@ -1,0 +1,29 @@
+.container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: white;
+  padding: 5px 10px 6px 10px;
+  border-radius: 4px;
+  color: black;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 200ms ease-out;
+  display: flex;
+  column-gap: 6px;
+}
+
+.container:hover {
+  box-shadow: 0 0 9px 3px rgba(167, 87, 246, 0.7);
+}
+
+.thunder {
+  width: 8px;
+  height: auto;
+  transition: all 200ms ease-out;
+}
+
+.container:hover .thunder {
+  transform: scale(1.15);
+  fill: rgba(167, 87, 246, 0.7);
+}

@@ -4,6 +4,8 @@ import { SessionProvider } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import GiveFeedback from "@/Components/GiveFeedback/GiveFeedback";
+
 function Loading() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -45,6 +47,7 @@ export default function App({
       <Container>
         <Loading />
         <Component {...pageProps} />
+        <GiveFeedback />
       </Container>
     </SessionProvider>
   );

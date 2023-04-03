@@ -28,41 +28,6 @@ export default function ProductNav(props) {
         </div>
         <div className={styles.menuWrapper}>
           <Link
-            href={`/products/${props.product.slug}/feedbacks`}
-            className={
-              //router.pathname === "/products/[slug]/bugs"
-              router.pathname.includes("feedbacks")
-                ? styles.activeLink
-                : styles.menuLink
-            }
-          >
-            <Image
-              src={feedbackIcon}
-              className={styles.menuIcon}
-              width={16}
-              alt=""
-            />
-            <p className={styles.menuLinkText}>Feedback</p>
-          </Link>
-          <Link
-            href={`/products/${props.product.slug}/bugs`}
-            className={
-              //router.pathname === "/products/[slug]/bugs"
-              router.pathname.includes("bugs")
-                ? styles.activeLink
-                : styles.menuLink
-            }
-          >
-            <Image
-              src={bugIcon}
-              className={styles.menuIcon}
-              width={16}
-              alt=""
-            />
-            <p className={styles.menuLinkText}>Bugs</p>
-          </Link>
-
-          <Link
             href={`/products/${props.product.slug}/settings`}
             className={
               router.pathname === "/products/[slug]/settings"

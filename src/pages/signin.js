@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Head from "next/head";
-import { getProviders, signIn } from "next-auth/react";
+import { getProviders, signIn, signOut } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth";
 
 import { firebaseConfig } from "../pages/api/auth/[...nextauth]";
@@ -12,8 +12,19 @@ import publiclyIcon from "../../public/assets/logos/publicly-icon.svg";
 
 //import styles from "./signin.module.css";
 import styles from "@/styles/signin.module.css";
+import blurWrapper from "../../public/assets/blurs/blurWrapper.png";
+import Link from "next/link";
 
-export default function SignIn({ providers }) {
+import { doc, query, getDocs, collection, where } from "@firebase/firestore";
+import { db } from "@/firebase/config";
+
+export default function SignIn({ providers, boolSignOut }) {
+  useEffect(() => {
+    if (boolSignOut) {
+      signOut();
+    }
+  }, [boolSignOut]);
+
   return (
     <>
       <Head>
@@ -23,6 +34,12 @@ export default function SignIn({ providers }) {
       <div className={styles.container}>
         <Image src={publiclyIcon} className={styles.icon} height={70} />
         <div className={styles.signinWrapper}>
+          <Image
+            src={blurWrapper}
+            width={412}
+            height={303}
+            className={styles.blurWrapper}
+          />
           <h1>Welcome to Publicly</h1>
           <p className={styles.subtitle}>Sign in to get started.</p>
           <div className={styles.providersButtons}>
@@ -67,6 +84,20 @@ export default function SignIn({ providers }) {
               }
             })}
           </div>
+          <p className={styles.request}>
+            Need another option?
+            <br />
+            Request it{" "}
+            {
+              <Link
+                href="https://publicly.so/products/publicly/features"
+                target="_blank"
+              >
+                here
+              </Link>
+            }
+            .
+          </p>
         </div>
       </div>
     </>
@@ -80,53 +111,37 @@ export async function getServerSideProps(context) {
     firebaseConfig
   );
 
+  let boolSignOut = false;
+
   if (session) {
-    return { redirect: { destination: "/products" } };
+    const usersInstance = collection(db, "users");
+    let user;
+
+    const userRef = query(
+      usersInstance,
+      where("email", "==", session.user.email)
+    );
+    const userSnap = await getDocs(userRef);
+    userSnap.forEach((snap) => {
+      if (snap.exists()) {
+        const data = snap.data();
+        user = data;
+        user.id = snap.id;
+      }
+    });
+
+    if (user) {
+      console.log("user");
+      return { redirect: { destination: "/products" } };
+    } else {
+      boolSignOut = true;
+      console.log("no user");
+    }
   }
 
   const providers = await getProviders(context);
 
   return {
-    props: { providers: Object.values(providers) ?? [] },
+    props: { providers: Object.values(providers) ?? [], boolSignOut },
   };
 }
-/*
-export default function signup() {
-  return (
-    <div className={styles.container}>
-      <h1>Sign up</h1>
-      <form action="/" method="post">
-        <input
-          type="text"
-          id="firstname"
-          name="firstname"
-          placeholder="Your firstname"
-          required
-        />
-        <input
-          type="lastname"
-          id="lastname"
-          name="lastname"
-          placeholder="Your lastname"
-          required
-        />
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Your email"
-          required
-        />
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Your password"
-          required
-        />
-        <button type="submit">Sign up</button>
-      </form>
-    </div>
-  );
-}
-*/

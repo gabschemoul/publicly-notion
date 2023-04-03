@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function ProductCard(props) {
   return (
     <div className={styles.wrapper}>
-      <Link href={`/products/${props.slug}/bugs`} className={styles.card}>
+      <Link href={`/products/${props.slug}/settings`} className={styles.card}>
         <div
           className={styles.productIcon}
           style={{ backgroundImage: "url(" + props.icon + ")" }}

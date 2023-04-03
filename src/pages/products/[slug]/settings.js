@@ -7,6 +7,7 @@ import {
   query,
   where,
   collection,
+  getDoc,
   getDocs,
   doc,
   setDoc,
@@ -123,7 +124,7 @@ export default function settings({ product }) {
     const docRef = await setDoc(productInstance, newProduct);
 
     // Redirection
-    router.push(`/products/${newProduct.slug}/bugs`);
+    router.push(`/products/${newProduct.slug}/settings`);
   };
 
   const submitUpload = (e) => {
@@ -253,7 +254,7 @@ export default function settings({ product }) {
                   className={styles.changeLogo}
                   onClick={() => handleClickLogo()}
                 >
-                  <p>Change</p>
+                  <p>{product.icon !== "" ? "Change" : "Upload"}</p>
                 </div>
               </div>
 
@@ -326,6 +327,7 @@ export default function settings({ product }) {
                 Save
               </button>
             </form>
+
             <div className={styles.dangerZone}>
               <h2>Danger zone</h2>
               <button className={styles.deleteButton} onClick={showDeletePopup}>
@@ -370,6 +372,18 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const userInstance = doc(db, "users", session.user.id);
+  const userSnap = await getDoc(userInstance);
+
+  if (!userSnap.data()) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
+      },
+    };
+  }
+
   const slug = context.params.slug;
 
   const productsInstance = collection(db, "products");
@@ -391,6 +405,32 @@ export async function getServerSideProps(context) {
   if (!product) {
     return {
       notFound: true,
+    };
+  }
+
+  let isMaker = false;
+
+  product.makersId.forEach((id) => {
+    if (id === session.user.id) {
+      isMaker = true;
+    }
+  });
+
+  if (!isMaker) {
+    return {
+      redirect: {
+        destination: `/products`,
+        permanent: false,
+      },
+    };
+  }
+
+  if (!product.notion.token) {
+    return {
+      redirect: {
+        destination: `/products/${product.slug}/connect`,
+        permanent: false,
+      },
     };
   }
 

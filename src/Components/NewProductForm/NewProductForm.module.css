@@ -1,17 +1,43 @@
 .container {
-  height: calc(100vh - 40px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  padding: 80px 0;
+  position: relative;
+}
+
+.blurWrapper {
+  position: absolute;
+  top: 0;
+  left: 50vw;
+  transform: translate(-50%, -20px);
+  z-index: -1;
+}
+
+.surHeading {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .form {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  row-gap: 12px;
+  row-gap: 14px;
   width: 500px;
+  background-color: #1f0a34;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 7px;
 }
 
 .uploadedIconWrapper {
@@ -41,7 +67,9 @@
   width: 70px;
   height: 70px;
   border-radius: 10px;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 /*
 .form input {
@@ -58,51 +86,74 @@
   font-weight: 900;
 }*/
 
-.form input {
+.form input,
+.form textarea {
   height: 50px;
-  border-radius: 10px;
+  border-radius: 8px;
   padding-left: 20px;
-  font-size: 16px;
-  background-color: #212327;
-  border: 1px solid rgba(108, 108, 108, 0.3);
-  color: white;
+  font-size: 14px;
+  background-color: white;
+  border: 1px solid white;
+  color: black;
   font-weight: 600;
   width: 100%;
   transition: all 100ms ease-in-out;
 }
 
-.form input:hover {
+.form input {
+  height: 50px;
+}
+
+.form textarea {
+  height: 115px;
+  padding-top: 18px;
+}
+
+.form input:hover,
+.form textarea:hover {
   border: 1px solid rgba(108, 108, 108, 0.6);
 }
 
-.form input:focus {
+.form input:focus,
+.form textarea:focus {
   border: 1px solid #a657f6;
   box-shadow: 0px 0px 20px rgba(167, 87, 246, 0.4);
 }
 
-.form input:focus {
+.form input:focus,
+.form textarea:focus {
   border: 1px solid #a657f6;
 }
 
-.form input:focus-visible {
+.form input:focus-visible,
+.form textarea:focus-visible {
   outline: none;
 }
 
-.form input::placeholder {
+.form input::placeholder,
+.form textarea::placeholder {
   font-weight: 500;
+  color: #a1a1a1;
+}
+
+.form label {
+  font-weight: bold;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .submitButton {
   height: 50px;
-  font-size: 16px;
-  border-radius: 12px;
+  font-size: 14px;
+  border-radius: 8px;
   border: none;
   background-color: #a657f6;
   color: white;
   transition: all 150ms ease-in-out;
   cursor: pointer;
-  font-weight: 900;
-  font-family: Menlo;
+  font-weight: medium;
+  margin-top: 28px;
+  letter-spacing: 0.6px;
 }
 
 .submitButton:hover {
@@ -124,6 +175,7 @@
 }*/
 .iconUpload {
   height: 100px;
+  width: 100%;
   padding: 20px;
   cursor: pointer;
   border: 1px dashed rgba(255, 255, 255, 0.6);
@@ -131,7 +183,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  row-gap: 10px;
+  row-gap: 3px;
   border-radius: 12px;
   transition: all 100ms ease-in-out;
 }

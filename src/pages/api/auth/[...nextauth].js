@@ -15,6 +15,8 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
+import { sendEmailToNewUser } from "@/utils/email";
+
 export const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -77,6 +79,8 @@ export default NextAuth({
 
       const userInstance = doc(db, "users", user.id);
       setDoc(userInstance, newUser);
+
+      sendEmailToNewUser(user.email);
     },
   },
   pages: {

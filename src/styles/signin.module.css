@@ -3,6 +3,15 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  position: relative;
+}
+
+.blurWrapper {
+  position: absolute;
+  top: 0;
+  left: 50vw;
+  transform: translate(-50%, -20px);
+  z-index: -1;
 }
 
 .container h1 {
@@ -24,8 +33,13 @@
   }
 }
 
-.subtitle {
+.subtitle,
+.request {
   color: rgba(255, 255, 255, 0.61);
+}
+
+.request {
+  text-align: center;
 }
 
 .signinWrapper {
@@ -47,7 +61,7 @@
   row-gap: 10px;
   width: 100%;
   max-width: 340px;
-  margin-top: 40px;
+  margin: 40px 0;
 }
 
 .googleButton {
@@ -62,7 +76,12 @@
   background-color: white;
   border-radius: 6px;
   cursor: pointer;
+  transition: all 200ms ease-out;
 }
+.googleButton:hover {
+  background-color: rgb(216, 216, 216);
+}
+
 .githubButton {
   display: flex;
   flex-direction: row;
@@ -75,4 +94,8 @@
   background-color: #1b1f23;
   border-radius: 6px;
   cursor: pointer;
+  transition: all 200ms ease-out;
+}
+.githubButton:hover {
+  background-color: #252a2f;
 }

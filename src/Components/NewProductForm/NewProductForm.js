@@ -25,6 +25,8 @@ import { useSession, getSession } from "next-auth/react";
 
 import styles from "./NewProductForm.module.css";
 import plusIcon from "../../../public/assets/icons/plusIcon.svg";
+import uploadIcon from "../../../public/assets/icons/uploadIcon.svg";
+import blurWrapper from "../../../public/assets/blurs/blurWrapper.png";
 
 export default function NewProductForm(props) {
   const [newProduct, setNewProduct] = useState({
@@ -32,8 +34,10 @@ export default function NewProductForm(props) {
     tagline: "",
     slug: "",
     icon: "",
-    bugs: [],
-    feedbacks: [],
+    notion: {
+      token: null,
+      databaseId: null,
+    },
     active: true,
   });
 
@@ -82,9 +86,17 @@ export default function NewProductForm(props) {
 
     await setDoc(userInstance, newUser);
 
+    const productInstance = doc(db, "products", docRef.id);
+
+    const finalProduct = {
+      ...fullProduct,
+      id: docRef.id,
+    };
+
+    await setDoc(productInstance, finalProduct);
+
     // Redirection
-    router.push("/products");
-    //router.push(`/products/${newProduct.slug}`);
+    router.push(`/products/${newProduct.slug}/connect`);
   };
 
   const [newFile, setNewFile] = useState({});
@@ -228,8 +240,6 @@ export default function NewProductForm(props) {
 
   useEffect(() => {
     uploadedIconRef.current.style.backgroundImage = "url(" + uploadedIcon + ")";
-    console.log("uploadedIcon");
-    console.log(uploadedIcon);
     if (uploadedIcon.includes("undefined") && uploadedIcon.length !== 0) {
       uploadIconRef.current.style.display = "flex";
       uploadedIconWrapperRef.current.style.display = "none";
@@ -251,88 +261,107 @@ export default function NewProductForm(props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <div className={styles.container}>
-        <h1>Create a new product</h1>
+        <Image
+          src={blurWrapper}
+          width={412}
+          height={303}
+          className={styles.blurWrapper}
+        />
+        <p className={styles.surHeading}>Step 1 of 2</p>
+        <h1>Create your product</h1>
         <form action="" onSubmit={handleSubmit} className={styles.form}>
-          <input
-            type="file"
-            name="icon"
-            id="icon"
-            onChange={submitUpload}
-            style={{ display: "none" }}
-            ref={uploadRef}
-            accept="image/*"
-          />
-          <div
-            className={styles.iconUpload}
-            onClick={() => handleClick()}
-            ref={uploadIconRef}
-          >
-            <Image src={plusIcon} width={16} height={16} alt="" />
-            <p>Upload your product logo</p>
-          </div>
-          <div
-            className={styles.uploadedIconWrapper}
-            ref={uploadedIconWrapperRef}
-          >
+          <div className={styles.inputWrapper}>
+            <label htmlFor="icon">Logo</label>
+            <input
+              type="file"
+              name="icon"
+              id="icon"
+              onChange={submitUpload}
+              style={{ display: "none" }}
+              ref={uploadRef}
+              accept="image/*"
+            />
             <div
-              className={styles.uploadedIcon}
-              style={{ backgroundImage: "url(" + uploadedIcon + ")" }}
-              ref={uploadedIconRef}
-            ></div>
-            <button
-              className={styles.changeIconButton}
+              className={styles.iconUpload}
               onClick={() => handleClick()}
+              ref={uploadIconRef}
             >
-              Change
-            </button>
+              <Image src={uploadIcon} width={16} height={16} alt="" />
+              <p>Upload your product logo</p>
+            </div>
+            <div
+              className={styles.uploadedIconWrapper}
+              ref={uploadedIconWrapperRef}
+            >
+              <div
+                className={styles.uploadedIcon}
+                style={{ backgroundImage: "url(" + uploadedIcon + ")" }}
+                ref={uploadedIconRef}
+              ></div>
+              <button
+                className={styles.changeIconButton}
+                onClick={() => handleClick()}
+              >
+                Change
+              </button>
+            </div>
           </div>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Name"
-            maxLength={100}
-            value={newProduct.name}
-            onChange={handleChange}
-            ref={nameInputRef}
-            required
-          />
-          <input
-            type="text"
-            id="tagline"
-            name="tagline"
-            placeholder="Tagline"
-            maxLength={200}
-            value={newProduct.tagline}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            id="slug"
-            name="slug"
-            placeholder="Slug"
-            value={newProduct.slug}
-            maxLength={100}
-            onChange={handleSlugChange}
-            ref={slugRef}
-            required
-          />
-          <p
-            className={styles.errorSlug}
-            style={{ display: "none" }}
-            ref={errorSlugRef}
-          >
-            This slug is already used by another product. Choose another one.
-          </p>
-          <p
-            className={styles.errorSlug}
-            style={{ display: "none" }}
-            ref={errorCharSlugRef}
-          >
-            Invalid character.
-          </p>
+          <div className={styles.inputWrapper}>
+            <label htmlFor="name">Product name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Apple"
+              maxLength={100}
+              value={newProduct.name}
+              onChange={handleChange}
+              ref={nameInputRef}
+              required
+            />
+          </div>
+          <div className={styles.inputWrapper}>
+            <label htmlFor="tagline">Tagline</label>
+            <textarea
+              type="text"
+              id="tagline"
+              name="tagline"
+              placeholder="Explain what your product is in less than a tweet..."
+              maxLength={280}
+              value={newProduct.tagline}
+              onChange={handleChange}
+            ></textarea>
+          </div>
+          <div className={styles.inputWrapper}>
+            <label htmlFor="slug">Slug</label>
+            <input
+              type="text"
+              id="slug"
+              name="slug"
+              placeholder="The end of the url (ex: publicly.so/products/apple)"
+              value={newProduct.slug}
+              maxLength={100}
+              onChange={handleSlugChange}
+              ref={slugRef}
+              required
+            />
+            <p
+              className={styles.errorSlug}
+              style={{ display: "none" }}
+              ref={errorSlugRef}
+            >
+              This slug is already used by another product. Choose another one.
+            </p>
+            <p
+              className={styles.errorSlug}
+              style={{ display: "none" }}
+              ref={errorCharSlugRef}
+            >
+              Invalid character.
+            </p>
+          </div>
           <button type="submit" className={styles.submitButton} ref={submitRef}>
-            Create product
+            Next
           </button>
         </form>
       </div>

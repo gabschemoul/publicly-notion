@@ -1,0 +1,85 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 80px 0;
+  position: relative;
+}
+
+.blurWrapper {
+  position: absolute;
+  top: 0;
+  left: 50vw;
+  transform: translate(-50%, -20px);
+  z-index: -1;
+}
+
+.surHeading {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 30px;
+  width: 500px;
+  background-color: #1f0a34;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+.instructions {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-radius: 15px;
+  padding: 13px 20px 27px 20px;
+  width: 100%;
+}
+
+.instructions h4 {
+  padding-bottom: 18px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.instructions ol {
+  padding-left: 20px;
+}
+
+.instructions li {
+  padding-left: 6px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.instructions li::marker {
+  font-family: var(--font-classic);
+  margin-right: 10px;
+}
+
+.link {
+  color: #faff00;
+  text-decoration: underline;
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  column-gap: 8px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: black;
+  font-weight: 600;
+}
+
+.notionIcon {
+  transition: all 200ms ease-out;
+}

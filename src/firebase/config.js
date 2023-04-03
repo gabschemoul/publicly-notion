@@ -15,7 +15,11 @@ const firebaseConfig = {
 const app =
   getApps().length === 0
     ? initializeApp({ ...firebaseConfig, projectId: firebaseConfig?.projectId })
-    : getApp();
+    : /*: initializeApp(
+        { ...firebaseConfig, projectId: firebaseConfig?.projectId },
+        "publiclyApp" + getApps().length + 1
+      );*/
+      getApp();
 const db = getFirestore(app);
 
 export { app, db };
