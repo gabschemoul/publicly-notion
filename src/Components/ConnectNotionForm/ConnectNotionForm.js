@@ -49,7 +49,7 @@ export default function ConnectNotionForm({ product }) {
           </ol>
         </div>
         <a
-          href={`https://api.notion.com/v1/oauth/authorize?client_id=6318eded-4be8-4036-ac38-f78538464722&response_type=code&owner=user&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fnotion%2Fcallback&state=${product.slug}`}
+          href={`https://api.notion.com/v1/oauth/authorize?client_id=6318eded-4be8-4036-ac38-f78538464722&response_type=code&owner=user&redirect_uri=https%3A%2F%2Fapp.publicly.so%2Fauth%2Fnotion%2Fcallback&state=${product.slug}`}
           class={styles.button}
           onMouseEnter={() => notionMouseEnter()}
           onMouseLeave={() => notionMouseLeave()}
