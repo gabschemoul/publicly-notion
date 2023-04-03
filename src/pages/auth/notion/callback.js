@@ -92,7 +92,7 @@ export async function getServerSideProps(resolvedUrl) {
     data: {
       grant_type: "authorization_code",
       code: resolvedUrl.query.code,
-      redirect_uri: "http://localhost:3000/auth/notion/callback",
+      redirect_uri: "https://app.publicly.so/auth/notion/callback",
     },
     headers: { "Content-Type": "application/json" },
   };
