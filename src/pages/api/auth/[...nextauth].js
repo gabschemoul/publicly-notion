@@ -4,8 +4,6 @@ import GitHubProvider from "next-auth/providers/github";
 import { FirestoreAdapter } from "@next-auth/firebase-adapter";
 import jwt from "jsonwebtoken";
 
-import { useRouter } from "next/router";
-
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
@@ -74,15 +72,10 @@ export default NextAuth({
       console.log("newUser");
       console.log(newUser);
 
-      const router = useRouter();
-
       const userInstance = doc(db, "users", user.id);
       await setDoc(userInstance, newUser).then(() => {
         console.log("User created!");
-
         sendEmailToNewUser(user.email);
-
-        router.push("/products/new");
       });
     },
   },
