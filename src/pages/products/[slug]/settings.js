@@ -139,10 +139,6 @@ export default function settings({ product, user }) {
         description: "A user has just changed his product settings!",
         tags: {
           email: user.email,
-          name: nameTag,
-          icon: iconTag,
-          slug: slugTag,
-          tagline: taglineTag,
         },
       }),
     });
