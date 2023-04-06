@@ -137,7 +137,7 @@ export default function settings({ product, user }) {
         tags: {
           email: user.email,
           name: nameTag,
-          icon: iconTag,
+          slug: slugTag,
           tagline: taglineTag,
         },
       }),
