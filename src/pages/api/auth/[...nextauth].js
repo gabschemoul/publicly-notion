@@ -79,9 +79,6 @@ export default NextAuth({
         role: "maker",
       };
 
-      console.log("logsnag");
-      console.log(logsnag);
-
       const userInstance = doc(db, "users", user.id);
       await setDoc(userInstance, newUser).then(() => {
         sendEmailToNewUser(user.email);
@@ -110,6 +107,17 @@ export default NextAuth({
           },
         });
       }
+    },
+    async signOut({ session }) {
+      await logsnag.publish({
+        channel: "user-signed-out",
+        event: "User signed out",
+        description: "A new user has just signed out!",
+        icon: "🔥",
+        notify: true,
+      });
+      console.log("session");
+      console.log(session);
     },
   },
   pages: {
