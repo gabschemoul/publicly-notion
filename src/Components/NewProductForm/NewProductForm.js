@@ -103,7 +103,7 @@ export default function NewProductForm(props) {
     await setDoc(productInstance, finalProduct);
 
     await logsnag.publish({
-      channel: "new-product",
+      channel: "user-signed-up",
       event: "New product",
       description: "A new product has been created!",
       icon: "🔥",
