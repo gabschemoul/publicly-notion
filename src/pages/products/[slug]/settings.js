@@ -123,6 +123,20 @@ export default function settings({ product, user }) {
 
     const docRef = await setDoc(productInstance, newProduct);
 
+    const nameTag = product.name + " > " + newProduct.name;
+    const iconTag = product.icon + " > " + newProduct.icon;
+    const slugTag = product.slug + " > " + newProduct.slug;
+    const taglineTag = product.tagline + " > " + newProduct.tagline;
+
+    console.log("nameTag");
+    console.log(nameTag);
+    console.log("iconTag");
+    console.log(iconTag);
+    console.log("slugTag");
+    console.log(slugTag);
+    console.log("taglineTag");
+    console.log(taglineTag);
+
     await fetch("https://app.publicly.so/api/logsnag", {
       method: "POST",
       body: JSON.stringify({
@@ -131,10 +145,10 @@ export default function settings({ product, user }) {
         description: "A user has just changed his product settings!",
         tags: {
           user: user.email,
-          name: product.name + " > " + newProduct.name,
-          icon: product.icon + " > " + newProduct.icon,
-          slug: product.slug + " > " + newProduct.slug,
-          tagline: product.tagline + " > " + newProduct.tagline,
+          name: nameTag,
+          icon: iconTag,
+          slug: slugTag,
+          tagline: taglineTag,
         },
       }),
     });
