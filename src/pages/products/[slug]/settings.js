@@ -128,11 +128,6 @@ export default function settings({ product, user }) {
     const slugTag = product.slug + " > " + newProduct.slug;
     const taglineTag = product.tagline + " > " + newProduct.tagline;
 
-    console.log("product");
-    console.log(product);
-    console.log("newProduct");
-    console.log(newProduct);
-
     await fetch("https://app.publicly.so/api/logsnag", {
       method: "POST",
       body: JSON.stringify({
@@ -140,8 +135,10 @@ export default function settings({ product, user }) {
         event: "New product settings",
         description: "A user has just changed his product settings!",
         tags: {
-          email: user.email,
           name: nameTag,
+          icon: iconTag,
+          slu: slugTag,
+          tagline: taglineTag,
         },
       }),
     });
