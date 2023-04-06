@@ -97,6 +97,20 @@ export default NextAuth({
         },
       });
     },
+    async signIn({ user, isNewUser }) {
+      if (!isNewUser) {
+        await logsnag.publish({
+          channel: "user-logged-in",
+          event: "User logged in",
+          description: "A new user has just logged in!",
+          icon: "🔥",
+          notify: true,
+          tags: {
+            email: user.email,
+          },
+        });
+      }
+    },
   },
   pages: {
     // new user
