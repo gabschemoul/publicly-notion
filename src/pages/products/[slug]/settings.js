@@ -20,11 +20,18 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 
+import { LogSnag } from "logsnag";
+
 import styles from "@/styles/ProductSettings.module.css";
 
 import ProductNav from "@/Components/ProductNav/ProductNav";
 
-export default function settings({ product }) {
+const logsnag = new LogSnag({
+  token: process.env.LOGSNAG_TOKEN,
+  project: process.env.LOGSNAG_PROJECT,
+});
+
+export default function settings({ product, user }) {
   const [newProduct, setNewProduct] = useState(product);
   const [newIcon, setNewIcon] = useState(product.icon);
   const [validSlug, setValidSlug] = useState(true);
@@ -123,6 +130,21 @@ export default function settings({ product }) {
 
     const docRef = await setDoc(productInstance, newProduct);
 
+    await logsnag.publish({
+      channel: "product-settings-changed",
+      event: "New product settings",
+      description: "A user has just changed his product settings!",
+      icon: "🔥",
+      notify: true,
+      tags: {
+        user: user.email,
+        name: product.name + " > " + newProduct.name,
+        icon: product.icon + " > " + newProduct.icon,
+        slug: product.slug + " > " + newProduct.slug,
+        tagline: product.tagline + " > " + newProduct.tagline,
+      },
+    });
+
     // Redirection
     router.push(`/products/${newProduct.slug}/settings`);
   };
@@ -213,6 +235,18 @@ export default function settings({ product }) {
 
     const productInstance = doc(db, "products", product.id);
     await setDoc(productInstance, newProduct);
+
+    await logsnag.publish({
+      channel: "product-deleted",
+      event: "Product deleted",
+      description: "A user has just deleted his product!",
+      icon: "🔥",
+      notify: true,
+      tags: {
+        user: user.email,
+        product: product.name,
+      },
+    });
 
     // Redirection
     router.push(`/products`);
@@ -437,6 +471,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       product: JSON.parse(JSON.stringify(product)),
+      user: session.user,
     },
   };
 }

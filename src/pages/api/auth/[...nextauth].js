@@ -108,16 +108,17 @@ export default NextAuth({
         });
       }
     },
-    async signOut(param) {
+    async signOut(params) {
       await logsnag.publish({
         channel: "user-signed-out",
         event: "User signed out",
         description: "A new user has just signed out!",
         icon: "🔥",
         notify: true,
+        tags: {
+          email: params.token.email,
+        },
       });
-      console.log("param");
-      console.log(param);
     },
   },
   pages: {

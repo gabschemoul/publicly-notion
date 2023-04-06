@@ -23,10 +23,17 @@ import {
 
 import { useSession, getSession } from "next-auth/react";
 
+import { LogSnag } from "logsnag";
+
 import styles from "./NewProductForm.module.css";
 import plusIcon from "../../../public/assets/icons/plusIcon.svg";
 import uploadIcon from "../../../public/assets/icons/uploadIcon.svg";
 import blurWrapper from "../../../public/assets/blurs/blurWrapper.png";
+
+const logsnag = new LogSnag({
+  token: process.env.LOGSNAG_TOKEN,
+  project: process.env.LOGSNAG_PROJECT,
+});
 
 export default function NewProductForm(props) {
   const [newProduct, setNewProduct] = useState({
@@ -94,6 +101,18 @@ export default function NewProductForm(props) {
     };
 
     await setDoc(productInstance, finalProduct);
+
+    await logsnag.publish({
+      channel: "new-product",
+      event: "New product",
+      description: "A new product has been created!",
+      icon: "🔥",
+      notify: true,
+      tags: {
+        email: user.email,
+        product: newProduct.name,
+      },
+    });
 
     // Redirection
     router.push(`/products/${newProduct.slug}/connect`);
