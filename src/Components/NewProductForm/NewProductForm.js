@@ -102,12 +102,17 @@ export default function NewProductForm(props) {
 
     await setDoc(productInstance, finalProduct);
 
-    await logsnag.publish({
-      channel: "user-signed-up",
-      event: "New product",
-      description: "A new product has been created!",
-      icon: "🔥",
-      notify: true,
+    await fetch("https://app.publicly.so/api/logsnag", {
+      method: "POST",
+      body: JSON.stringify({
+        channel: "new-product",
+        event: "New product created",
+        description: "A user has just created a new product!",
+        tags: {
+          email: user.email,
+          product: newProduct.name,
+        },
+      }),
     });
 
     // Redirection
