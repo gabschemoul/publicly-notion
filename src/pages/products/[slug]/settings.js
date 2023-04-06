@@ -135,9 +135,10 @@ export default function settings({ product, user }) {
         event: "New product settings",
         description: "A user has just changed his product settings!",
         tags: {
+          email: user.email,
           name: nameTag,
           icon: iconTag,
-          slu: slugTag,
+          slug: slugTag,
           tagline: taglineTag,
         },
       }),
