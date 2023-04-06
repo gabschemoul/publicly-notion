@@ -4,6 +4,8 @@ import GitHubProvider from "next-auth/providers/github";
 import { FirestoreAdapter } from "@next-auth/firebase-adapter";
 import jwt from "jsonwebtoken";
 
+import { LogSnag } from "logsnag";
+
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
@@ -18,6 +20,11 @@ export const firebaseConfig = {
   appId: process.env.FIREBASE_APP_ID,
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
+
+const logsnag = new LogSnag({
+  token: process.env.LOGSNAG_TOKEN,
+  project: process.env.LOGSNAG_PROJECT,
+});
 
 export default NextAuth({
   providers: [
@@ -73,8 +80,18 @@ export default NextAuth({
       };
 
       const userInstance = doc(db, "users", user.id);
-      await setDoc(userInstance, newUser).then(() => {
+      await setDoc(userInstance, newUser).then(async () => {
         sendEmailToNewUser(user.email);
+        await logsnag.publish({
+          channel: "user-signed-up",
+          event: "A new user has just signed up!",
+          description: `email: ${user.email}`,
+          icon: "🔥",
+          notify: true,
+          tags: {
+            email: user.email,
+          },
+        });
       });
     },
   },
