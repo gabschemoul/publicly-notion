@@ -20,16 +20,9 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 
-import { LogSnag } from "logsnag";
-
 import styles from "@/styles/ProductSettings.module.css";
 
 import ProductNav from "@/Components/ProductNav/ProductNav";
-
-const logsnag = new LogSnag({
-  token: process.env.LOGSNAG_TOKEN,
-  project: process.env.LOGSNAG_PROJECT,
-});
 
 export default function settings({ product, user }) {
   const [newProduct, setNewProduct] = useState(product);
@@ -130,19 +123,20 @@ export default function settings({ product, user }) {
 
     const docRef = await setDoc(productInstance, newProduct);
 
-    await logsnag.publish({
-      channel: "product-settings-changed",
-      event: "New product settings",
-      description: "A user has just changed his product settings!",
-      icon: "🔥",
-      notify: true,
-      tags: {
-        user: user.email,
-        name: product.name + " > " + newProduct.name,
-        icon: product.icon + " > " + newProduct.icon,
-        slug: product.slug + " > " + newProduct.slug,
-        tagline: product.tagline + " > " + newProduct.tagline,
-      },
+    await fetch("https://app.publicly.so/api/logsnag", {
+      method: "POST",
+      body: JSON.stringify({
+        channel: "product-settings-changed",
+        event: "New product settings",
+        description: "A user has just changed his product settings!",
+        tags: {
+          user: user.email,
+          name: product.name + " > " + newProduct.name,
+          icon: product.icon + " > " + newProduct.icon,
+          slug: product.slug + " > " + newProduct.slug,
+          tagline: product.tagline + " > " + newProduct.tagline,
+        },
+      }),
     });
 
     // Redirection
@@ -236,16 +230,17 @@ export default function settings({ product, user }) {
     const productInstance = doc(db, "products", product.id);
     await setDoc(productInstance, newProduct);
 
-    await logsnag.publish({
-      channel: "product-deleted",
-      event: "Product deleted",
-      description: "A user has just deleted his product!",
-      icon: "🔥",
-      notify: true,
-      tags: {
-        user: user.email,
-        product: product.name,
-      },
+    await fetch("https://app.publicly.so/api/logsnag", {
+      method: "POST",
+      body: JSON.stringify({
+        channel: "product-deleted",
+        event: "Product deleted",
+        description: "A user has just deleted his product!",
+        tags: {
+          user: user.email,
+          product: product.name,
+        },
+      }),
     });
 
     // Redirection

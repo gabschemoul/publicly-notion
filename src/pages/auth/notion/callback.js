@@ -13,13 +13,6 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
 
-import { LogSnag } from "logsnag";
-
-const logsnag = new LogSnag({
-  token: process.env.LOGSNAG_TOKEN,
-  project: process.env.LOGSNAG_PROJECT,
-});
-
 export default function NotionCallback({ token, templateId, product }) {
   /*const router = useRouter();
 
@@ -150,15 +143,16 @@ export async function setInfos(product, token, databaseId) {
 
   await setDoc(productInstance, newProduct);
 
-  await logsnag.publish({
-    channel: "connected-to-notion",
-    event: "Product connected to Notion",
-    description: "A user has just connected his product to his Notion!",
-    icon: "🔥",
-    notify: true,
-    tags: {
-      user: product.makersId[0],
-      product: product.name,
-    },
+  await fetch("https://app.publicly.so/api/logsnag", {
+    method: "POST",
+    body: JSON.stringify({
+      channel: "connected-to-notion",
+      event: "Product connected to Notion",
+      description: "A user has just connected his product to his Notion!",
+      tags: {
+        user: product.makersId[0],
+        product: product.name,
+      },
+    }),
   });
 }
