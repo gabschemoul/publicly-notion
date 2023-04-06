@@ -109,7 +109,7 @@ export default function NewProductForm(props) {
       icon: "🔥",
       notify: true,
       tags: {
-        email: user.email,
+        product: newProduct.name,
       },
     });
 
