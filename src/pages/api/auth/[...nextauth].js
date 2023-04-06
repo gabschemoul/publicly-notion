@@ -108,7 +108,7 @@ export default NextAuth({
         });
       }
     },
-    async signOut({ session }) {
+    async signOut(param) {
       await logsnag.publish({
         channel: "user-signed-out",
         event: "User signed out",
@@ -116,8 +116,8 @@ export default NextAuth({
         icon: "🔥",
         notify: true,
       });
-      console.log("session");
-      console.log(session);
+      console.log("param");
+      console.log(param);
     },
   },
   pages: {
