@@ -110,7 +110,6 @@ export default function NewProductForm(props) {
       notify: true,
       tags: {
         email: user.email,
-        product: fullProduct.name,
       },
     });
 
