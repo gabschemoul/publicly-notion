@@ -138,7 +138,7 @@ export default function settings({ product, user }) {
           email: user.email,
           name: nameTag,
           icon: iconTag,
-          slug: slugTag,
+          tagline: taglineTag,
         },
       }),
     });
