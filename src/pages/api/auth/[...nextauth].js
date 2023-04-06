@@ -79,19 +79,22 @@ export default NextAuth({
         role: "maker",
       };
 
+      console.log("logsnag");
+      console.log(logsnag);
+
       const userInstance = doc(db, "users", user.id);
-      await setDoc(userInstance, newUser).then(async () => {
+      await setDoc(userInstance, newUser).then(() => {
         sendEmailToNewUser(user.email);
-        await logsnag.publish({
-          channel: "user-signed-up",
-          event: "A new user has just signed up!",
-          description: `email: ${user.email}`,
-          icon: "🔥",
-          notify: true,
-          tags: {
-            email: user.email,
-          },
-        });
+      });
+      await logsnag.publish({
+        channel: "user-signed-up",
+        event: "New user",
+        description: "A new user has just signed up!",
+        icon: "🔥",
+        notify: true,
+        tags: {
+          email: user.email,
+        },
       });
     },
   },
