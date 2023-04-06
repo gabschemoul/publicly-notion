@@ -108,9 +108,6 @@ export default function NewProductForm(props) {
       description: "A new product has been created!",
       icon: "🔥",
       notify: true,
-      tags: {
-        product: newProduct.name,
-      },
     });
 
     // Redirection
