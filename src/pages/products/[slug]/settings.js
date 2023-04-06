@@ -128,6 +128,9 @@ export default function settings({ product, user }) {
     const slugTag = product.slug + " > " + newProduct.slug;
     const taglineTag = product.tagline + " > " + newProduct.tagline;
 
+    console.log("user");
+    console.log(user);
+
     await fetch("https://app.publicly.so/api/logsnag", {
       method: "POST",
       body: JSON.stringify({
