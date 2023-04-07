@@ -4,6 +4,8 @@ import { SessionProvider } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import PlausibleProvider from "next-plausible";
+
 import GiveFeedback from "@/Components/GiveFeedback/GiveFeedback";
 
 function Loading() {
@@ -43,12 +45,14 @@ export default function App({
   pageProps: { session, ...pageProps },
 }) {
   return (
-    <SessionProvider session={pageProps.session}>
-      <Container>
-        <Loading />
-        <Component {...pageProps} />
-        <GiveFeedback />
-      </Container>
-    </SessionProvider>
+    <PlausibleProvider domain="app.publicly.so">
+      <SessionProvider session={pageProps.session}>
+        <Container>
+          <Loading />
+          <Component {...pageProps} />
+          <GiveFeedback />
+        </Container>
+      </SessionProvider>
+    </PlausibleProvider>
   );
 }

@@ -5,11 +5,6 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <Script
-          defer
-          data-domain="app.publicly.so"
-          src="https://plausible.io/js/script.js"
-        ></Script>
         <link
           rel="apple-touch-icon"
           sizes="180x180"
